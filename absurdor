@@ -1,4 +1,4 @@
-#!/usr/bin/env lua
+#!/usr/bin/env lua5.4
 local argparse = require "argparse"
 local json = require "json"
 local path = require "path"
@@ -33,7 +33,7 @@ function decodewith(decoder, fn)
    die(not path.isfile(fn), fn.." is not a file.")
    local f, err = io.open(fn, "r")
    die(err)
-   status, res = xpcall(decoder, die, f:read("a"))
+   status, res = xpcall(decoder, die, f:read('a'))
    f:close()
    die(not status, res)
    return res
