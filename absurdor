@@ -105,10 +105,15 @@ function sec2week(s)
 	return math.floor(s/(24 * 60 * 60 * 7))
 end
 
+function week2sec(w)
+   return w*24*60*60*7
+end
+
 if args.command == "report" then
 
 	height = 0
 	local plot = {}
+	local pushed = {}
 	local max = 0
 
 	if #log > 0 then
@@ -117,10 +122,20 @@ if args.command == "report" then
 
 	for i,e in ipairs(log) do
 		if e.what == "push" then
-			height = (height + 1) % 100
-			local day = sec2week(e.when) - start
-			plot[day] = height
-			max = day
+			local w = sec2week(e.when) - start
+			if pushed[w-1] or pushed[w] or week2sec(sec2week(e.when)) < 1693159683 then
+			   -- At 1693159683 seconds from Unix epoch, the governing
+			   -- rule was changed so that the Boulder falls to zero
+			   -- if it was not pushed the previous week. However, the
+			   -- change is not retroactive; hence the magic number.
+			   height = (height + 1) % 100
+			else
+			   io.stderr:write(string.format("The boulder fell on %s.\n", os.date("%Y-%m-%d %H:%M:%S %z", e.when)))
+			   height = 0
+			end
+			plot[w] = height
+			pushed[w] = true
+			max = w 
 		end
 	end
 
@@ -151,25 +166,19 @@ if args.command == "report" then
 
 	f = io.open(tmpname, "a")
 
-	-- local lines = {}
-	-- for i = math.max(1, #plot - 70), #plot do
-	-- 	for h = 1, plot[i] do
-	-- 		lines[h] = (lines[h] or "") .. "#"
-	-- 	end
-	-- 	for h = plot[i]+1, 100 do
-	-- 		lines[h] = (lines[h] or "") .. " "
-	-- 	end
-	-- end
-	-- for i = #lines, 1, -1 do
-	-- 	f:write(lines[i] .. "\n")
-	-- end
-
 	for i = #plot, 1, -1 do
-		f:write(string.rep("#", plot[i]) .. "\n")
+		f:write(string.rep("#", plot[i]))
+		if i == max then
+			f:write(" <- the heighest we've ever reached!\n")
+		else
+			f:write("\n")
+		end
 	end
 
-
-	f:write("======================================================================")
+	f:write("----------------------------------------------------------------------\n")
+	f:write("Do you have any suggestions on what I should put on the report?\n")
+	f:write("Send them to me!\n")
+	f:write("======================================================================\n")
 	f:close()
 
 	if args.p then
