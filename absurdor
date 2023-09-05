@@ -23,6 +23,7 @@ function yn(prompt)
 	meaning = {Y = true, y = true, n = false, N = false}
 	while meaning[ans] == nil do
 		io.write(prompt)
+		io.flush()
 		ans = io.read(1)
 	end
 	return ans
@@ -84,6 +85,14 @@ function fmt_event(e)
 	return format(fmt, args)
 end
 
+function sec2week(s)
+	return math.floor(s/(24 * 60 * 60 * 7))
+end
+
+function week2sec(w)
+   return w*24*60*60*7
+end
+
 local parser = argparse("absurdor", "Manage Absurdor duties")
 	:command_target("command")
 parser:command("report", "Generate and send absurdor report")
@@ -100,14 +109,6 @@ local args = parser:parse()
 
 fn = "log.json"
 log = decodewith(json.decode, fn)
-
-function sec2week(s)
-	return math.floor(s/(24 * 60 * 60 * 7))
-end
-
-function week2sec(w)
-   return w*24*60*60*7
-end
 
 if args.command == "report" then
 
