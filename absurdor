@@ -4,6 +4,7 @@ local json = require "json"
 local path = require "path"
 local fs = require "path.fs"
 local date = require "date"
+local pprint = require "pprint"
 
 function die(err, msg)
    msg = tostring(msg or err)
@@ -116,6 +117,8 @@ if args.command == "report" then
 	local plot = {}
 	local pushed = {}
 	local max = 0
+	local failed = false
+	local who = {}
 
 	if #log > 0 then
 		start = sec2week(log[1].when)
@@ -125,18 +128,28 @@ if args.command == "report" then
 		if e.what == "push" then
 			local w = sec2week(e.when) - start
 			if pushed[w-1] or pushed[w] or week2sec(sec2week(e.when)) < 1693159683 then
-			   -- At 1693159683 seconds from Unix epoch, the governing
-			   -- rule was changed so that the Boulder falls to zero
-			   -- if it was not pushed the previous week. However, the
-			   -- change is not retroactive; hence the magic number.
-			   height = (height + 1) % 100
+				-- At 1693159683 seconds from Unix epoch, the governing
+				-- rule was changed so that the Boulder falls to zero
+				-- if it was not pushed the previous week. However, the
+				-- change is not retroactive; hence the magic number.
+				height = (height + 1) % 100
 			else
-			   io.stderr:write(string.format("The boulder fell on %s.\n", os.date("%Y-%m-%d %H:%M:%S %z", e.when)))
-			   height = 0
+				height = 1
 			end
 			plot[w] = height
+			who[w] = who[w] or {}
+			table.insert(who[w], e.who)
 			pushed[w] = true
 			max = w 
+		end
+	end
+
+	local w = sec2week(os.time()) - start
+	if (not (w == 0)) and (not pushed[w-1]) then
+		failed = true
+		if not pushed[w] then
+			height = 0
+			plot[w] = 0
 		end
 	end
 
@@ -168,12 +181,15 @@ if args.command == "report" then
 	f = io.open(tmpname, "a")
 
 	for i = #plot, 1, -1 do
-		f:write(string.rep("#", plot[i]))
+		f:write("|", string.rep("#", plot[i] or 0))
 		if i == max then
-			f:write(" <- the heighest we've ever reached!\n")
-		else
-			f:write("\n")
+			f:write(" <- the heighest we've ever reached!")
+		elseif i == #plot then
+			f:write(" <- where we are now")
 		end
+		f:write(" ")
+		f:write(table.concat(who[i] or {}, ", "))
+		f:write("\n")
 	end
 
 	f:write("----------------------------------------------------------------------\n")
