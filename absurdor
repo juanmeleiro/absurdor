@@ -27,7 +27,7 @@ function yn(prompt)
 		io.flush()
 		ans = io.read(1)
 	end
-	return ans
+	return meaning[ans]
 end
 
 function decodewith(decoder, fn)
@@ -116,7 +116,7 @@ if args.command == "report" then
 	height = 0
 	local plot = {}
 	local pushed = {}
-	local max = 0
+	local max = 1
 	local failed = false
 	local who = {}
 
@@ -140,7 +140,9 @@ if args.command == "report" then
 			who[w] = who[w] or {}
 			table.insert(who[w], e.who)
 			pushed[w] = true
-			max = w 
+			if height >= plot[max] then
+				max = w
+			end
 		end
 	end
 
@@ -185,7 +187,7 @@ if args.command == "report" then
 		if i == max then
 			f:write(" <- the heighest we've ever reached!")
 		elseif i == #plot then
-			f:write(" <- where we are now")
+			f:write(" <- where we are now.")
 		end
 		f:write(" ")
 		f:write(table.concat(who[i] or {}, ", "))
@@ -211,6 +213,8 @@ if args.command == "report" then
 							 height = height,
 			})
 			os.rename(tmpname, string.format("archive/%s", os.date("%F")))
+		else
+			os.remove(tmpname)
 		end
 	end
 elseif args.command == "record" then
