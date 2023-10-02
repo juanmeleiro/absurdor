@@ -104,6 +104,8 @@ local cmd_press = cmd_record:command("push", "A push of The Boulder")
 cmd_press:argument("who", "Name of the player")
 cmd_press:argument("when", "Timestamp of boulder push")
 	:convert(maildate)
+cmd_press:option("-m", "Message ID where push happened")
+	:target("where")
 parser:command("log", "Display log")
 
 local args = parser:parse()
@@ -223,7 +225,8 @@ elseif args.command == "record" then
 		table.insert(log, {
 						 when = args.when,
 						 what = "push",
-						 who = args.who
+						 who = args.who,
+						 where = args.where
 		})
 	end
 elseif args.command == "log" then
