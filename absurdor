@@ -221,7 +221,7 @@ if args.command == "report" then
 	end
 elseif args.command == "record" then
 	if args.what == "push" then
-		io.write(string.format("%s pushed the boulder at %d\n", args.who, args.when))
+		io.write(string.format("%s pushed the boulder at %s\n", args.who, os.date("%Y-%m-%d %H:%M %z", args.when)))
 		table.insert(log, {
 						 when = args.when,
 						 what = "push",
