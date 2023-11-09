@@ -4,7 +4,7 @@ local json = require "json"
 local path = require "path"
 local fs = require "path.fs"
 local date = require "date"
-local pprint = require "pprint"
+local pprint = require("pprint").pprint
 
 function die(err, msg)
    msg = tostring(msg or err)
@@ -35,7 +35,7 @@ function decodewith(decoder, fn)
    die(not path.isfile(fn), fn.." is not a file.")
    local f, err = io.open(fn, "r")
    die(err)
-   status, res = xpcall(decoder, die, f:read('a'))
+   status, res = xpcall(decoder, die, f)
    f:close()
    die(not status, res)
    return res
@@ -71,6 +71,33 @@ function format(fmt, dict, sett)
       res = fmt.gsub(res, "{"..s.."}", value or "nil")
    end
    return res
+end
+
+function is_valid_entry(e)
+	return (
+		(e.what ~= nil) and
+		(e.when ~= nil) and
+		(e.what ~= "push" or e.who ~= nil) and
+		(e.what ~= "report" or e.height ~= nil)
+	)
+end
+
+function parse_jsonl(f)
+	local log = {}
+	for l in f:lines() do
+		local e = json.decode(l)
+		die(not is_valid_entry(e), string.format("Invalid log entry:\n    %s", l))
+		table.insert(log, e)
+	end
+	return log
+end
+
+function write_jsonl(l)
+	local res = ""
+	for _,v in ipairs(l) do
+		res = res .. json.encode(v) .. "\n"
+	end
+	return res
 end
 
 function fmt_event(e)
@@ -111,7 +138,7 @@ parser:command("log", "Display log")
 local args = parser:parse()
 
 fn = "log.json"
-log = decodewith(json.decode, fn)
+log = decodewith(parse_jsonl, fn)
 
 if args.command == "report" then
 
@@ -235,5 +262,5 @@ elseif args.command == "log" then
 	end
 end
 
-encodewith(json.encode, fn, log)
+encodewith(write_jsonl, fn, log)
 
