@@ -248,6 +248,11 @@ if args.command == "report" then
 	end
 elseif args.command == "record" then
 	if args.what == "push" then
+		for _,e in ipairs(log) do
+			if e.when == args.when then
+				die("There's already an event recorded at that time.")
+			end
+		end
 		io.write(string.format("%s pushed the boulder at %s\n", args.who, os.date("%Y-%m-%d %H:%M %z", args.when)))
 		table.insert(log, {
 						 when = args.when,
