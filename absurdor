@@ -148,6 +148,7 @@ if args.command == "report" then
 	local max = 1
 	local failed = false
 	local who = {}
+	local players = {}
 
 	if #log > 0 then
 		start = sec2week(log[1].when)
@@ -171,6 +172,11 @@ if args.command == "report" then
 			pushed[w] = true
 			if height >= plot[max] then
 				max = w
+			end
+			if players[e.who] then
+				players[e.who] = players[e.who] + 1
+			else
+				players[e.who] = 1
 			end
 		end
 	end
@@ -207,10 +213,25 @@ if args.command == "report" then
 	end
 
 	tmpname = ".tmp"
+	-- Height banner
 	os.execute(string.format("m4 %s template.m4 >> %s", defs, tmpname))
 
 	f = io.open(tmpname, "a")
 
+	-- Top pushers
+	f:write("TOP PUSHERS\n")
+	local scores = {}
+	for p,v in pairs(players) do
+		table.insert(scores, {player = p, pushes = v})
+	end
+	table.sort(scores, function (s0, s1) return s0.pushes > s1.pushes end)
+	for i,s in ipairs(scores) do
+		f:write(string.format("#%02d %2d %s %s\n", i, s.pushes, string.rep("=", s.pushes), s.player))
+	end
+	f:write("\n")
+
+	-- Height graph
+	f:write("THE ROAD SO FAR\n")
 	for i = #plot, 1, -1 do
 		f:write("|", string.rep("#", plot[i] or 0))
 		if i == max then
