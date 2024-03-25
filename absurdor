@@ -289,4 +289,5 @@ elseif args.command == "log" then
 end
 
 encodewith(write_jsonl, fn, log)
-
+os.execute(string.format('jq --sort-keys . %s > .tmp', fn))
+os.execute(string.format('mv .tmp %s', fn))
