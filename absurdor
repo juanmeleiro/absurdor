@@ -35,7 +35,7 @@ function decodewith(decoder, fn)
    die(not path.isfile(fn), fn.." is not a file.")
    local f, err = io.open(fn, "r")
    die(err)
-   status, res = xpcall(decoder, die, f)
+   status, res = xpcall(decoder, die, f:read("a"))
    f:close()
    die(not status, res)
    return res
@@ -138,7 +138,7 @@ parser:command("log", "Display log")
 local args = parser:parse()
 
 fn = "log.json"
-log = decodewith(parse_jsonl, fn)
+log = decodewith(json.decode, fn)
 
 if args.command == "report" then
 
@@ -288,6 +288,6 @@ elseif args.command == "log" then
 	end
 end
 
-encodewith(write_jsonl, fn, log)
+encodewith(json.encode, fn, log)
 os.execute(string.format('jq --sort-keys . %s > .tmp', fn))
 os.execute(string.format('mv .tmp %s', fn))
