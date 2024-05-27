@@ -162,7 +162,7 @@ if args.command == "report" then
 				-- rule was changed so that the Boulder falls to zero
 				-- if it was not pushed the previous week. However, the
 				-- change is not retroactive; hence the magic number.
-				height = (height + 1) % 100
+				height = (height + 1)
 			else
 				height = 1
 			end
