@@ -233,7 +233,7 @@ if args.command == "report" then
 	-- Height graph
 	f:write("THE ROAD SO FAR\n")
 	for i = #plot, 1, -1 do
-		f:write("|", string.rep("#", plot[i] or 0))
+		f:write("|", string.rep("#", math.floor(30*plot[i]/max) or 0))
 		if i == max then
 			f:write(" <- the heighest we've ever reached!")
 		elseif i == #plot then
