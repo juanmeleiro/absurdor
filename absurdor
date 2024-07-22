@@ -138,7 +138,7 @@ parser:command("report", "Generate and send absurdor report")
 	:flag("-p")
 commands.record = parser:command("record", "Record events")
 	:command_target("what")
-local commands.push = commands.record:command("push", "A push of The Boulder")
+commands.push = commands.record:command("push", "A push of The Boulder")
 commands.push:argument("who", "Name of the player")
 commands.push:argument("when", "Timestamp of boulder push")
 	:convert(maildate)
@@ -148,7 +148,7 @@ commands.log = parser:command("log", "Display log")
 commands.transfer = commands.record:command("transfer", "Transfer the Veblen")
 commands.transfer:argument("who", "Name of the player")
 commands.transfer:argument("when", "When the transfer took place")
-commands.tranfser:argument("amount", "Amount spent on the transfer")
+commands.transfer:argument("payed", "Amount spent on the transfer")
 commands.push:option("-m", "Message ID where push happened"):target("where")
 
 local args = parser:parse()
@@ -165,6 +165,11 @@ if args.command == "report" then
 	local failed = false
 	local who = {}
 	local players = {}
+	local veblen = {
+		cost = 1,
+		current = {owner = "Agora", payed = nil},
+		history = {}
+	}
 
 	if #log > 0 then
 		start = sec2week(log[1].when)
@@ -194,6 +199,11 @@ if args.command == "report" then
 			else
 				players[e.who] = 1
 			end
+		elseif e.what == "transfer" then
+			die(e.payed < veblen.cost, string.format("Recorded transfer by %s used less spendies (%d) than the current Veblen cost (%s)", e.who, e.payed, veblen.cost))
+			table.insert(veblen.history, veblen.current)
+			veblen.current = {owner = e.who, payed = e.payed, cost = veblen.cost}
+			veblen.cost = e.payed + 1
 		end
 	end
 
@@ -260,6 +270,18 @@ if args.command == "report" then
 		f:write("\n")
 	end
 
+	f:write("\n----------------------------------------------------------------------\nTHE VEBLEN\n\n")
+	f:write("          The Veblen\n")
+	f:write(string.format("          is owned by %s\n\n", veblen.current.owner))
+
+	f:write("HISTORY\n")
+	table.sort(veblen.history, function(x,y) return x.when > y.when end)
+	for _,e in ipairs(veblen.history) do
+		f:write("[%s] %s %s%s\n", os.date("%Y-%m-%d %H:%M %z", args.when), e.who, string.rep("-", e.cost), string.rep("+", e.payed - e.cost))
+	end
+	f:write('[2024-07-18 02:59 +0000] The Veblen is created')
+	f:write("\n\n")
+
 	f:write("----------------------------------------------------------------------\n")
 	f:write("Do you have any suggestions on what I should put on the report?\n")
 	f:write("Send them to me!\n")
@@ -294,13 +316,13 @@ elseif args.command == "record" then
 						 where = args.where
 		})
 	elseif args.what == "transfer" then
-		io.write(string.format("%s transfered the Veblen to emself for %d spendies.\n", args.who, args.cost))
+		io.write(string.format("%s transfered the Veblen to emself for %d spendies.\n", args.who, args.payed))
 		table.insert(log, {
 			when = args.when,
 			what = "transfer",
 			who = args.who,
 			where = args.where,
-			cost = args.cost
+			payed = args.payed
 		})
 	end
 elseif args.command == "log" then
