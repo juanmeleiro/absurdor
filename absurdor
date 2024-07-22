@@ -121,19 +121,35 @@ function week2sec(w)
    return w*24*60*60*7
 end
 
+function is_duplicate(ts, log)
+	for _,e in ipairs(log) do
+		if e.when == ts then
+			return true
+		end
+	end
+	return false
+end
+
 local parser = argparse("absurdor", "Manage Absurdor duties")
 	:command_target("command")
+local commands = {}
+
 parser:command("report", "Generate and send absurdor report")
 	:flag("-p")
-local cmd_record = parser:command("record", "Record events")
+commands.record = parser:command("record", "Record events")
 	:command_target("what")
-local cmd_press = cmd_record:command("push", "A push of The Boulder")
-cmd_press:argument("who", "Name of the player")
-cmd_press:argument("when", "Timestamp of boulder push")
+local commands.push = commands.record:command("push", "A push of The Boulder")
+commands.push:argument("who", "Name of the player")
+commands.push:argument("when", "Timestamp of boulder push")
 	:convert(maildate)
-cmd_press:option("-m", "Message ID where push happened")
-	:target("where")
-parser:command("log", "Display log")
+commands.push:option("-m", "Message ID where push happened"):target("where")
+commands.log = parser:command("log", "Display log")
+
+commands.transfer = commands.record:command("transfer", "Transfer the Veblen")
+commands.transfer:argument("who", "Name of the player")
+commands.transfer:argument("when", "When the transfer took place")
+commands.tranfser:argument("amount", "Amount spent on the transfer")
+commands.push:option("-m", "Message ID where push happened"):target("where")
 
 local args = parser:parse()
 
@@ -268,18 +284,23 @@ if args.command == "report" then
 		end
 	end
 elseif args.command == "record" then
+	die(is_duplicate(args.when), "There's already an event recorded at that time.")
 	if args.what == "push" then
-		for _,e in ipairs(log) do
-			if e.when == args.when then
-				die("There's already an event recorded at that time.")
-			end
-		end
 		io.write(string.format("%s pushed the boulder at %s\n", args.who, os.date("%Y-%m-%d %H:%M %z", args.when)))
 		table.insert(log, {
 						 when = args.when,
 						 what = "push",
 						 who = args.who,
 						 where = args.where
+		})
+	elseif args.what == "transfer" then
+		io.write(string.format("%s transfered the Veblen to emself for %d spendies.\n", args.who, args.cost))
+		table.insert(log, {
+			when = args.when,
+			what = "transfer",
+			who = args.who,
+			where = args.where,
+			cost = args.cost
 		})
 	end
 elseif args.command == "log" then
