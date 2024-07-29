@@ -169,7 +169,7 @@ if args.command == "report" then
 	local players = {}
 	local veblen = {
 		cost = 1,
-		current = {owner = "Agora", payed = nil, when = 1721357958}, -- date proposal was enacted
+		current = {who = "Agora", payed = nil, when = 1721357958}, -- date proposal was enacted
 		history = {}
 	}
 
@@ -204,7 +204,7 @@ if args.command == "report" then
 		elseif e.what == "transfer" then
 			die(e.payed < veblen.cost, string.format("Recorded transfer by %s used less spendies (%d) than the current Veblen cost (%s)", e.who, e.payed, veblen.cost))
 			table.insert(veblen.history, veblen.current)
-			veblen.current = {owner = e.who, payed = e.payed, cost = veblen.cost, when = e.when}
+			veblen.current = {who = e.who, payed = e.payed, cost = veblen.cost, when = e.when}
 			veblen.cost = e.payed + 1
 		end
 	end
