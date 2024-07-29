@@ -169,8 +169,8 @@ if args.command == "report" then
 	local players = {}
 	local veblen = {
 		cost = 1,
-		current = {who = "Agora", payed = nil, when = 1721357958}, -- date proposal was enacted
-		history = {}
+		history = {},
+		namewidth = 0
 	}
 
 	if #log > 0 then
@@ -203,11 +203,14 @@ if args.command == "report" then
 			end
 		elseif e.what == "transfer" then
 			die(e.payed < veblen.cost, string.format("Recorded transfer by %s used less spendies (%d) than the current Veblen cost (%s)", e.who, e.payed, veblen.cost))
-			table.insert(veblen.history, veblen.current)
+			if veblen.current then table.insert(veblen.history, veblen.current) end
 			veblen.current = {who = e.who, payed = e.payed, cost = veblen.cost, when = e.when}
 			veblen.cost = e.payed + 1
+			veblen.namewidth = math.max(veblen.namewidth, string.len(e.who))
 		end
 	end
+
+	table.insert(veblen.history, veblen.current)
 
 	local w = sec2week(os.time()) - start
 	if (not (w == 0)) and (not pushed[w-1]) then
@@ -274,12 +277,12 @@ if args.command == "report" then
 
 	f:write("\n----------------------------------------------------------------------\nTHE VEBLEN\n\n")
 	f:write("          The Veblen\n")
-	f:write(string.format("          is owned by %s\n\n", veblen.current.owner))
+	f:write(string.format("          is owned by %s\n\n", veblen.current.who))
 
 	f:write("HISTORY\n")
-	table.sort(veblen.history, function(x,y) return x.when > y.when end)
+	table.sort(veblen.history, function(x,y) return x.cost > y.cost end)
 	for _,e in ipairs(veblen.history) do
-		f:write("[%s] %s %s%s\n", os.date("%Y-%m-%d %H:%M %z", args.when), e.who, string.rep("-", e.cost), string.rep("+", e.payed - e.cost))
+		f:write(string.format("[%s] %s %s%s\n", os.date("%Y-%m-%d %H:%M %z", args.when), string.rep(" ", veblen.namewidth - string.len(e.who)) .. e.who, string.rep("-", e.cost), string.rep("+", e.payed - e.cost)))
 	end
 	f:write('[2024-07-18 02:59 +0000] The Veblen is created')
 	f:write("\n\n")
@@ -301,6 +304,8 @@ if args.command == "report" then
 							 when = os.time(),
 							 what = "report",
 							 height = height,
+							 cost = veblen.cost,
+							 owner = veblen.current.who
 			})
 			os.rename(tmpname, string.format("archive/%s", os.date("%F")))
 		else
