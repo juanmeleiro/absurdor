@@ -149,6 +149,7 @@ commands.transfer = commands.record:command("transfer", "Transfer the Veblen")
 commands.transfer:argument("who", "Name of the player")
 commands.transfer:argument("when", "When the transfer took place")
 commands.transfer:argument("payed", "Amount spent on the transfer")
+	:convert(tonumber)
 commands.transfer:option("-m", "Message ID where push happened"):target("where")
 
 local args = parser:parse()
