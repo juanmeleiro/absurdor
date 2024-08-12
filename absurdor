@@ -280,7 +280,9 @@ if args.command == "report" then
 	f:write(string.format("          is owned by %s\n", veblen.current.who))
 	f:write(string.format("          and costs %d spendies\n\n", veblen.cost))
 
-	f:write("          It is shiny.\n\n")
+	f:write("          It is shiny.\n")
+	f:write("          It is round (and thus pointless).\n")
+	f:write("\n")
 
 	f:write("HISTORY\n")
 	table.sort(veblen.history, function(x,y) return x.cost > y.cost end)
