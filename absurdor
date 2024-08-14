@@ -287,7 +287,7 @@ if args.command == "report" then
 	f:write("HISTORY\n")
 	table.sort(veblen.history, function(x,y) return x.cost > y.cost end)
 	for _,e in ipairs(veblen.history) do
-		f:write(string.format("[%s] %s %s%s\n", os.date("%Y-%m-%d %H:%M %z", args.when), string.rep(" ", veblen.namewidth - string.len(e.who)) .. e.who, string.rep("$", e.cost), string.rep("+", e.payed - e.cost)))
+		f:write(string.format("[%s] %s %s%s\n", os.date("%Y-%m-%d %H:%M %z", e.when), string.rep(" ", veblen.namewidth - string.len(e.who)) .. e.who, string.rep("$", e.cost), string.rep("+", e.payed - e.cost)))
 	end
 	f:write('[2024-07-18 02:59 +0000] The Veblen is created')
 	f:write("\n\n")
