@@ -101,7 +101,7 @@ function write_jsonl(l)
 end
 
 function fmt_event(e)
-	date = os.date("%Y-%m-%d %H:%M:%S %z", e.when)
+	date = os.date("!%Y-%m-%d %H:%M:%S %z", e.when)
 	args = {ts = date}
 	if e.what == "report" then
 		fmt = "[{ts}] Reported boulder at height {height}"
@@ -134,8 +134,13 @@ local parser = argparse("absurdor", "Manage Absurdor duties")
 	:command_target("command")
 local commands = {}
 
-parser:command("report", "Generate and send absurdor report")
-	:flag("-p")
+commands.report = parser:command("report", "Generate and send absurdor report")
+commands.report:flag("-p")
+commands.report:flag("-d", "Plot the difference, not the height")
+commands.report:option("-t", "Which template to use")
+	:default("template.m4")
+	:argname("template")
+	:target("template")
 commands.record = parser:command("record", "Record events")
 	:command_target("what")
 commands.push = commands.record:command("push", "A push of The Boulder")
@@ -189,7 +194,11 @@ if args.command == "report" then
 			else
 				height = 1
 			end
-			plot[w] = height
+			if args.d then
+				plot[w] = (plot[w] or 0) + 1
+			else
+				plot[w] = height
+			end
 			who[w] = who[w] or {}
 			table.insert(who[w], e.who)
 			pushed[w] = true
@@ -226,14 +235,14 @@ if args.command == "report" then
 		if plot[i] then
 			cur = plot[i]
 		else
-			plot[i] = cur
+			plot[i] = (args.d and 0 or cur)
 		end
 	end
 
 	vars = {
-		YYYY = os.date("%Y"),
-		MM = os.date("%m"),
-		DD = os.date("%d"),
+		YYYY = os.date("!%Y"),
+		MM = os.date("!%m"),
+		DD = os.date("!%d"),
 		N = height
 	}
 
@@ -245,7 +254,7 @@ if args.command == "report" then
 
 	tmpname = ".tmp"
 	-- Height banner
-	os.execute(string.format("m4 %s template.m4 >> %s", defs, tmpname))
+	os.execute(string.format("m4 %s %s >> %s", defs, args.template, tmpname))
 
 	f = io.open(tmpname, "a")
 
@@ -261,12 +270,13 @@ if args.command == "report" then
 	end
 	f:write("\n")
 
+	local max_msg = args.d and " <- the furthest we've ever pushed in a week!" or " <- the heighest we've ever reached!"
 	-- Height graph
 	f:write("THE ROAD SO FAR\n")
 	for i = #plot, 1, -1 do
-		f:write("|", string.rep("#", math.floor(30*plot[i]/max) or 0))
+		f:write("|", string.rep("#", math.floor((math.min(30,plot[max]))*(plot[i] or 0)/plot[max])))
 		if i == max then
-			f:write(" <- the heighest we've ever reached!")
+			f:write(max_msg)
 		elseif i == #plot then
 			f:write(" <- where we are now.")
 		end
@@ -287,7 +297,7 @@ if args.command == "report" then
 	f:write("HISTORY\n")
 	table.sort(veblen.history, function(x,y) return x.cost > y.cost end)
 	for _,e in ipairs(veblen.history) do
-		f:write(string.format("[%s] %s %s%s\n", os.date("%Y-%m-%d %H:%M %z", e.when), string.rep(" ", veblen.namewidth - string.len(e.who)) .. e.who, string.rep("$", e.cost), string.rep("+", e.payed - e.cost)))
+		f:write(string.format("[%s] %s %s%s\n", os.date("!%Y-%m-%d %H:%M %z", e.when), string.rep(" ", veblen.namewidth - string.len(e.who)) .. e.who, string.rep("$", e.cost), string.rep("+", e.payed - e.cost)))
 	end
 	f:write('[2024-07-18 02:59 +0000] The Veblen is created')
 	f:write("\n\n")
@@ -312,14 +322,14 @@ if args.command == "report" then
 							 cost = veblen.cost,
 							 owner = veblen.current.who
 			})
-			os.rename(tmpname, string.format("archive/%s", os.date("%F")))
+			os.rename(tmpname, string.format("archive/%s", os.date("!%F")))
 		else
 			os.remove(tmpname)
 		end
 	end
 elseif args.command == "record" then
 	if args.what == "push" then
-		io.write(string.format("%s pushed the boulder at %s\n", args.who, os.date("%Y-%m-%d %H:%M %z", args.when)))
+		io.write(string.format("%s pushed the boulder at %s\n", args.who, os.date("!%Y-%m-%d %H:%M %z", args.when)))
 		table.insert(log, {
 						 when = args.when,
 						 what = "push",
