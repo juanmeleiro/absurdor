@@ -6,10 +6,10 @@ local fs = require "path.fs"
 local date = require "date"
 local pprint = require("pprint").pprint
 
-function die(err, msg)
+function die(err, msg, ...)
    msg = tostring(msg or err)
    if err then
-      io.stderr:write(msg .. "\n")
+      io.stderr:write(string.format(msg .. "\n", ...))
       os.exit(1)
    end
 end
@@ -109,6 +109,16 @@ function fmt_event(e)
 	elseif e.what == "push" then
 		fmt = "[{ts}] {who} pushed the boulder"
 		args.who = e.who
+	elseif e.what == "transfer" then
+		fmt = "[{ts}] {who} transfered the Veblen for {payed}"
+		args.who = e.who
+		args.payed= e.payed
+	elseif e.what == "devalue" then
+		fmt = "[{ts}] {who} devalued the Veblen to {value}"
+		args.who = e.who
+		args.value = e.value
+	else
+		die(true, "Unknown event type '%s'", e.what)
 	end
 	return format(fmt, args)
 end
@@ -135,7 +145,7 @@ local parser = argparse("absurdor", "Manage Absurdor duties")
 local commands = {}
 
 commands.report = parser:command("report", "Generate and send absurdor report")
-commands.report:flag("-p")
+commands.report:flag("-p", "Print report, but do not send")
 commands.report:flag("-d", "Plot the difference, not the height")
 commands.report:option("-t", "Which template to use")
 	:default("template.m4")
@@ -156,7 +166,15 @@ commands.transfer:argument("when", "When the transfer took place")
 	:convert(maildate)
 commands.transfer:argument("payed", "Amount spent on the transfer")
 	:convert(tonumber)
-commands.transfer:option("-m", "Message ID where push happened"):target("where")
+commands.transfer:option("-m", "Message ID where transfer happened"):target("where")
+
+commands.devalue = commands.record:command("devalue", "Devalue the Veblen")
+commands.devalue:argument("who", "Name of the player")
+commands.devalue:argument("when", "When the devalueing took place")
+	:convert(maildate)
+commands.devalue:argument("value", "The new value")
+	:convert(tonumber)
+commands.devalue:option("-m", "Message ID where devalue happened"):target("where")
 
 local args = parser:parse()
 
@@ -213,9 +231,13 @@ if args.command == "report" then
 		elseif e.what == "transfer" then
 			die(e.payed < veblen.cost, string.format("Recorded transfer by %s used less spendies (%d) than the current Veblen cost (%s)", e.who, e.payed, veblen.cost))
 			if veblen.current then table.insert(veblen.history, veblen.current) end
-			veblen.current = {who = e.who, payed = e.payed, cost = veblen.cost, when = e.when}
+			veblen.current = {who = e.who, payed = e.payed, cost = veblen.cost, when = e.when, what = "transfer"}
 			veblen.cost = e.payed + 1
 			veblen.namewidth = math.max(veblen.namewidth, string.len(e.who))
+		elseif e.what == "devalue" then
+			die(e.value ~= math.ceil(veblen.cost/2), string.format("Recorded devalueing of the Veblen to an incorrect value (from %d to %d)", veblen.cost, e.value))
+			table.insert(veblen.history, {when = e.when, what = "devalue", value = e.value})
+			veblen.cost = e.value
 		end
 	end
 
@@ -295,9 +317,13 @@ if args.command == "report" then
 	f:write("\n")
 
 	f:write("HISTORY\n")
-	table.sort(veblen.history, function(x,y) return x.cost > y.cost end)
+	table.sort(veblen.history, function(x,y) return x.when > y.when end)
 	for _,e in ipairs(veblen.history) do
-		f:write(string.format("[%s] %s %s%s\n", os.date("!%Y-%m-%d %H:%M %z", e.when), string.rep(" ", veblen.namewidth - string.len(e.who)) .. e.who, string.rep("$", e.cost), string.rep("+", e.payed - e.cost)))
+		if e.what == "transfer" then
+			f:write(string.format("[%s] %s %s%s\n", os.date("!%Y-%m-%d %H:%M %z", e.when), string.rep(" ", veblen.namewidth - string.len(e.who)) .. e.who, string.rep("$", e.cost), string.rep("+", e.payed - e.cost)))
+		elseif e.what == "devalue" then
+			f:write(string.format("[%s] %s %s\n", os.date("!%Y-%m-%d %H:%M %z", e.when), string.rep(" ", veblen.namewidth), string.rep("$", e.value)))
+		end
 	end
 	f:write('[2024-07-18 02:59 +0000] The Veblen is created')
 	f:write("\n\n")
@@ -344,6 +370,15 @@ elseif args.command == "record" then
 			who = args.who,
 			where = args.where,
 			payed = args.payed
+		})
+	elseif args.what == "devalue" then
+		io.write(string.format("%s devalued the Veblen to %d spendies.\n", args.who, args.value))
+		table.insert(log, {
+			when = args.when,
+			what = "devalue",
+			who = args.who,
+			where = args.where,
+			value = args.value
 		})
 	end
 elseif args.command == "log" then
