@@ -69,9 +69,16 @@ function format(fmt, dict, sett)
 end
 
 function sec2week(s)
-	return math.floor(s/(24 * 60 * 60 * 7))
+	local d = date(s)
+	d:adddays(-d:getisoweekday()+1)
+	d:sethours(0,0,0,0)
+	return date.diff(d, date.epoch()):spanseconds()
 end
 
 function week2sec(w)
-   return w*24*60*60*7
+   return w
+end
+
+function prevweek(w)
+	return date.diff(date(w):adddays(-7), date.epoch()):spanseconds()
 end

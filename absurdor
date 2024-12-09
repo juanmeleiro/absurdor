@@ -6,6 +6,7 @@ local path = require "path"
 local fs = require "path.fs"
 local record = require "lib.record"
 local pprint = require("pprint").pprint
+local date = require "date"
 
 require "lib.util"
 require "lib.log"
@@ -63,15 +64,19 @@ if args.command == "report" then
 		history = {},
 		namewidth = 0
 	}
+	local last = 0
 
 	if #log > 0 then
 		start = sec2week(log[1].when)
+		max = start
 	end
 
 	for i,e in ipairs(log) do
 		if e.what == "push" then
-			local w = sec2week(e.when) - start
-			if pushed[w-1] or pushed[w] or week2sec(sec2week(e.when)) < 1693159683 then
+			local w = sec2week(e.when)
+			if pushed[prevweek(w)] or
+			   pushed[w] or
+			   w < 1693159683 then
 				-- At 1693159683 seconds from Unix epoch, the governing
 				-- rule was changed so that the Boulder falls to zero
 				-- if it was not pushed the previous week. However, the
@@ -108,6 +113,8 @@ if args.command == "report" then
 			veblen.cost = e.value
 		elseif e.what == "report" then
 			veblen.cost = e.cost or veblen.cost
+			height = e.height or e.height
+			last = e.when
 		end
 	end
 
@@ -120,21 +127,12 @@ if args.command == "report" then
 
 	table.insert(veblen.history, veblen.current)
 
-	local w = sec2week(os.time()) - start
-	if (not (w == 0)) and (not pushed[w-1]) then
+	local w = sec2week(os.time())
+	if (not (w == 0)) and (not pushed[prevweek(w)]) then
 		failed = true
 		if not pushed[w] then
 			height = 0
 			plot[w] = 0
-		end
-	end
-
-	local cur = 0
-	for i = 1, max do
-		if plot[i] then
-			cur = plot[i]
-		else
-			plot[i] = (args.d and 0 or cur)
 		end
 	end
 
@@ -175,21 +173,6 @@ if args.command == "report" then
 		f:write(string.format("#%02d %2d %s %s\n", i, s.pushes, string.rep("=", s.pushes), s.player))
 	end
 	f:write("\n")
-
-	local max_msg = args.d and " <- the furthest we've ever pushed in a week!" or " <- the heighest we've ever reached!"
-	-- Height graph
-	f:write("THE ROAD SO FAR\n")
-	for i = #plot, 1, -1 do
-		f:write("|", string.rep("#", math.floor((math.min(30,plot[max]))*(plot[i] or 0)/plot[max])))
-		if i == max then
-			f:write(max_msg)
-		elseif i == #plot then
-			f:write(" <- where we are now.")
-		end
-		f:write(" ")
-		f:write(table.concat(who[i] or {}, ", "))
-		f:write("\n")
-	end
 
 	f:write("\n----------------------------------------------------------------------\nTHE VEBLEN\n\n")
 	f:write("          The Veblen\n")
