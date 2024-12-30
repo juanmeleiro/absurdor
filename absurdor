@@ -4,6 +4,7 @@ local argparse = require "argparse"
 local json = require "json"
 local path = require "path"
 local fs = require "path.fs"
+local record = require "lib.record"
 local pprint = require("pprint").pprint
 
 require "lib.util"
@@ -223,33 +224,7 @@ if args.command == "report" then
 		end
 	end
 elseif args.command == "record" then
-	if args.what == "push" then
-		io.write(string.format("%s pushed the boulder at %s\n", args.who, os.date("!%Y-%m-%d %H:%M %z", args.when)))
-		table.insert(log, {
-						 when = args.when,
-						 what = "push",
-						 who = args.who,
-						 where = args.where
-		})
-	elseif args.what == "transfer" then
-		io.write(string.format("%s transfered the Veblen to emself for %d spendies.\n", args.who, args.payed))
-		table.insert(log, {
-			when = args.when,
-			what = "transfer",
-			who = args.who,
-			where = args.where,
-			payed = args.payed
-		})
-	elseif args.what == "devalue" then
-		io.write(string.format("%s devalued the Veblen to %d spendies.\n", args.who, args.value))
-		table.insert(log, {
-			when = args.when,
-			what = "devalue",
-			who = args.who,
-			where = args.where,
-			value = args.value
-		})
-	end
+	record[args.what](io.stdout, args, log)
 elseif args.command == "log" then
 	for _,e in ipairs(log) do
 		io.write(fmt_event(e).."\n")
