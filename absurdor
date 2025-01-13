@@ -108,6 +108,10 @@ if args.command == "report" then
 			die(e.value ~= math.ceil(veblen.cost/2), string.format("Recorded devalueing of the Veblen to an incorrect value (from %d to %d)", veblen.cost, e.value))
 			table.insert(veblen.history, {when = e.when, what = "devalue", value = e.value})
 			veblen.cost = e.value
+	local news = {}
+	for i,e in ipairs(log) do
+		if e.when > last then
+			table.insert(news, e)
 		end
 	end
 
@@ -149,6 +153,13 @@ if args.command == "report" then
 	os.execute(string.format("m4 %s %s >> %s", defs, args.template, tmpname))
 
 	f = io.open(tmpname, "a")
+
+	f:write("EVENTS SINCE LAST REPORT\n")
+	table.sort(news, function(e0, e1) return e0.when > e1.when end)
+	for i,e in ipairs(news) do
+		f:write(fmt_event(e) .. "\n")
+	end
+	f:write("\n")
 
 	-- Top pushers
 	f:write("TOP PUSHERS\n")
