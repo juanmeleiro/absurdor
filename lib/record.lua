@@ -22,13 +22,22 @@ record.transfer = function(f, args, log)
 end
 
 record.devalue = function(f, args, log)
-	f:write(string.format("%s devalued the Veblen to %d spendies.\n", args.who, args.value))
+	local val = 1
+	local max = 0
+	for _,e in ipairs(log) do
+		if e.what == "report" and e.when > max then
+			max = e.when
+			val = e.cost
+		end
+	end
+
+	f:write(string.format("%s devalued the Veblen to %d spendies.\n", args.who, math.ceil(val/2)))
 	table.insert(log, {
 		when = args.when,
 		what = "devalue",
 		who = args.who,
 		where = args.where,
-		value = args.value
+		value = math.ceil(val/2)
 	})
 end
 

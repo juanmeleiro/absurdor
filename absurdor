@@ -42,8 +42,6 @@ commands.devalue = commands.record:command("devalue", "Devalue the Veblen")
 commands.devalue:argument("who", "Name of the player")
 commands.devalue:argument("when", "When the devalueing took place")
 	:convert(maildate)
-commands.devalue:argument("value", "The new value")
-	:convert(tonumber)
 commands.devalue:option("-m", "Message ID where devalue happened"):target("where")
 
 local args = parser:parse()
@@ -105,9 +103,13 @@ if args.command == "report" then
 			veblen.cost = e.payed + 1
 			veblen.namewidth = math.max(veblen.namewidth, string.len(e.who))
 		elseif e.what == "devalue" then
-			die(e.value ~= math.ceil(veblen.cost/2), string.format("Recorded devalueing of the Veblen to an incorrect value (from %d to %d)", veblen.cost, e.value))
+			local val = math.ceil(veblen.cost/2)
 			table.insert(veblen.history, {when = e.when, what = "devalue", value = e.value})
 			veblen.cost = e.value
+		elseif e.what == "report" then
+			veblen.cost = e.cost or veblen.cost
+		end
+
 	local news = {}
 	for i,e in ipairs(log) do
 		if e.when > last then
