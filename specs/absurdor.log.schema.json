@@ -1,0 +1,56 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/vocab/validation",
+	"$vocabulary": {
+		"https://json-schema.org/draft/2020-12/vocab/validation": true
+	},
+	"$id": "http://juanmeleiro.mat.br/agora/specs/absurdor.log.schema.json",
+	"$ref": "http://juanmeleiro.mat.br/agora/specs/log.schema.json",
+	"items": {
+		"type": "object",
+		"oneOf": [
+			{
+				"properties": {
+					"what": {
+						"const": "devalue"
+					}
+				},
+				"required": ["value", "who"]
+			},
+			{
+				"properties": {
+					"what": {
+						"const": "push"
+					}
+				},
+				"required": ["who"]
+			},
+			{
+				"properties": {
+					"what": {
+						"const": "report"
+					}
+				},
+				"required": ["height"],
+				"if": {
+					"properties": {
+						"when": {
+							"$comment": "This value does not, but SHOULD correspond to the timestamp when the rule creating the Veblen was enacted.",
+							"minimum": 1722280733
+						}
+					}
+				},
+				"then": {
+					"required": ["cost"]
+				}
+			},
+			{
+				"properties": {
+					"what": {
+						"const": "transfer"
+					}
+				},
+				"required": ["payed", "who"]
+			}
+		]
+	}
+}
