@@ -198,6 +198,8 @@ if args.command == "report" then
 	f:write("          It is shiny.\n")
 	f:write("          It is round (and thus pointless).\n")
 	f:write("          It is admired.\n")
+	f:write("          It has infinite points and is thus no longer pointless.\n")
+	f:write("            (N.B. do note that that's a circle)\n")
 	f:write("\n")
 
 	f:write("HISTORY\n")
