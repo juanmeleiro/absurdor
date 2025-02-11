@@ -109,6 +109,7 @@ if args.command == "report" then
 		elseif e.what == "report" then
 			veblen.cost = e.cost or veblen.cost
 		end
+	end
 
 	local news = {}
 	for i,e in ipairs(log) do
