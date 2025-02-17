@@ -31,17 +31,34 @@
 					}
 				},
 				"required": ["height"],
-				"if": {
-					"properties": {
-						"when": {
-							"$comment": "This value does not, but SHOULD correspond to the timestamp when the rule creating the Veblen was enacted.",
-							"minimum": 1722280733
+				"allOf": [
+					{
+						"if": {
+							"properties": {
+								"when": {
+									"$comment": "This value does not, but SHOULD correspond to the timestamp when the rule creating the Veblen was enacted.",
+									"minimum": 1722280733
+								}
+							}
+						},
+						"then": {
+							"required": ["cost"]
+						}
+					},
+					{
+						"if": {
+							"properties": {
+								"when": {
+									"$comment": "This is when the proposal enacting the slope was adopted. See mid:7f5a40e0-0fa2-4bd9-89b2-0a100c3aabd3@unspecified.systems"
+									"minimum": 1739754105
+								}
+							}
+						},
+						"then": {
+							"required": ["slope"]
 						}
 					}
-				},
-				"then": {
-					"required": ["cost"]
-				}
+				]
 			},
 			{
 				"properties": {

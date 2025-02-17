@@ -10,12 +10,12 @@ absurdor: juan          The State of the Absurd             YYYY-MM-DD
             #####     _/
            #######   /
           #########  /
-         |#########_/
-        /  #######/
-       /_   #####/
-      / /O_/   /                        The Boulder
-      | /_    /                           is at N
-      /_/\.  /
+         |#########_/                 The Boulder
+        /  #######/                      is at N
+       /_   #####/                     Its Slope is K
+      / /O_/   /
+      | /_    /                 It has been at MN
+      /_/\.  /                  Moving as fast as MK
      //  // _/
     /‘  /‘_/
    /  __`/

@@ -65,30 +65,43 @@ if args.command == "report" then
 		namewidth = 0
 	}
 	local last = 0
+	local slope
+	local maxslope = 1
+	local maxheight = 0
 
 	if #log > 0 then
-		start = sec2week(log[1].when)
+		start = unix2week(log[1].when)
 		max = start
 	end
 
 	for i,e in ipairs(log) do
 		if e.what == "push" then
-			local w = sec2week(e.when)
-			if pushed[prevweek(w)] or
-			   pushed[w] or
-			   w < 1693159683 then
+			local w = unix2week(e.when)
+			if (unix2week(1739754105) <= w and plot[w] == 0 and plot[unix2week(e.when - 7*24*60*60)] < slope) or
+			   (unix2week(1693159683) <= w and w < unix2week(1739754105) and not (pushed[unix2week(e.when - 7*24*60*60)] or pushed[w])) or
+			   (w < unix2week(1693159683) and height == 100)
+                -- At 1739754105 seconds from Unix epoch, the governing rule was changed
+                -- so that the Boulder falls to zero if it was not pushed as much as its
+                -- slope the previous week. However, the change is not retroactive; hence
+                -- the magic number.
+
 				-- At 1693159683 seconds from Unix epoch, the governing
 				-- rule was changed so that the Boulder falls to zero
 				-- if it was not pushed the previous week. However, the
 				-- change is not retroactive; hence the magic number.
-				height = (height + 1)
-			else
+			then
 				height = 1
-			end
-			if args.d then
-				plot[w] = (plot[w] or 0) + 1
+				slope = 1
 			else
-				plot[w] = height
+				height = (height + 1)
+				maxheight = math.max(height, maxheight)
+			end
+			plot[w] = (plot[w] or 0) + 1
+			if slope and plot[w] > slope then
+				slope = plot[w]
+				if e.when > 1739754105 then
+					maxslope = math.max(slope, maxslope)
+				end
 			end
 			who[w] = who[w] or {}
 			table.insert(who[w], e.who)
@@ -115,6 +128,7 @@ if args.command == "report" then
 			veblen.cost = e.cost or veblen.cost
 			height = e.height or e.height
 			last = e.when
+			slope = e.slope or 1
 		end
 	end
 
@@ -127,8 +141,9 @@ if args.command == "report" then
 
 	table.insert(veblen.history, veblen.current)
 
-	local w = sec2week(os.time())
-	if (not (w == 0)) and (not pushed[prevweek(w)]) then
+	local t = os.time()
+	local w = unix2week(t)
+	if (not (w == 0)) and (not pushed[unix2week(t - 7*24*60*60)]) then
 		failed = true
 		if not pushed[w] then
 			height = 0
@@ -140,7 +155,10 @@ if args.command == "report" then
 		YYYY = os.date("!%Y"),
 		MM = os.date("!%m"),
 		DD = os.date("!%d"),
-		N = height
+		N = height,
+		K = slope,
+		MN = maxheight,
+		MK = maxslope
 	}
 
 	defs = ""

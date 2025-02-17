@@ -68,15 +68,8 @@ function format(fmt, dict, sett)
    return res
 end
 
-function sec2week(s)
-	local d = date(s)
-	d:adddays(-d:getisoweekday()+1)
-	d:sethours(0,0,0,0)
-	return date.diff(d, date.epoch()):spanseconds()
-end
-
-function week2sec(w)
-   return w
+function unix2week(s)
+	return os.date("%GW%V", s)
 end
 
 function prevweek(w)
