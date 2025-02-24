@@ -1884,6 +1884,7 @@
     "cost": 21,
     "height": 210,
     "owner": "Ben",
+    "slope": 3,
     "what": "report",
     "when": 1739820570
   },
