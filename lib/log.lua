@@ -31,8 +31,13 @@ function fmt_event(e)
 	date = os.date("!%Y-%m-%d %H:%M:%S %z", e.when)
 	args = {ts = date}
 	if e.what == "report" then
-		fmt = "[{ts}] Reported boulder at height {height}"
-		args.height = e.height 
+		if e.slope then
+			fmt = "[{ts}] Reported boulder at height {height} and slope at {slope}"
+		else
+			fmt = "[{ts}] Reported boulder at height {height}"
+		end
+		args.height = e.height
+		args.slope = e.slope
 	elseif e.what == "push" then
 		fmt = "[{ts}] {who} pushed the boulder"
 		args.who = e.who

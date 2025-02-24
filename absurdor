@@ -133,8 +133,11 @@ if args.command == "report" then
 	end
 
 	local news = {}
+	local datecmd = io.popen("date +%s -d 'last monday'", 'r')
+	local lastweek = tonumber(datecmd:read('*a'))
+	datecmd:close()
 	for i,e in ipairs(log) do
-		if e.when > last then
+		if e.when > lastweek then
 			table.insert(news, e)
 		end
 	end
@@ -143,7 +146,7 @@ if args.command == "report" then
 
 	local t = os.time()
 	local w = unix2week(t)
-	if (not (w == 0)) and (not pushed[unix2week(t - 7*24*60*60)]) then
+	if (plot[unix2week(t - 7*24*60*60)] < slope) then
 		failed = true
 		if not pushed[w] then
 			height = 0
@@ -173,7 +176,7 @@ if args.command == "report" then
 
 	f = io.open(tmpname, "a")
 
-	f:write("EVENTS SINCE LAST REPORT\n")
+	f:write("EVENTS SINCE LAST WEEK\n")
 	table.sort(news, function(e0, e1) return e0.when > e1.when end)
 	for i,e in ipairs(news) do
 		f:write(fmt_event(e) .. "\n")
@@ -234,7 +237,8 @@ if args.command == "report" then
 							 what = "report",
 							 height = height,
 							 cost = veblen.cost,
-							 owner = veblen.current.who
+							 owner = veblen.current.who,
+							 slope = slope
 			})
 			os.rename(tmpname, string.format("archive/%s", os.date("!%F")))
 		else
