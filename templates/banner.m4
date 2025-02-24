@@ -1,4 +1,5 @@
 changequote(`«', `»')dnl
+changecom()dnl
 Date: esyscmd(«date -R»)dnl
 From: juan <juan@juanmeleiro.mat.br>
 To: <agora-official@agoranomic.org>
@@ -11,11 +12,11 @@ absurdor: juan          The State of the Absurd             YYYY-MM-DD
            #######   /
           #########  /
          |#########_/                 The Boulder
-        /  #######/                      is at N
-       /_   #####/                     Its Slope is K
+        /  #######/                      is at H
+       /_   #####/                     Its Slope is S
       / /O_/   /
-      | /_    /                 It has been at MN
-      /_/\.  /                  Moving as fast as MK
+      | /_    /                 It has been at MAXH
+      /_/\.  /                  Moving as fast as MAXS
      //  // _/
     /‘  /‘_/
    /  __`/

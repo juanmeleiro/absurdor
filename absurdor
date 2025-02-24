@@ -152,13 +152,13 @@ if args.command == "report" then
 	end
 
 	vars = {
-		YYYY = os.date("!%Y"),
-		MM = os.date("!%m"),
-		DD = os.date("!%d"),
-		N = height,
-		K = slope,
-		MN = maxheight,
-		MK = maxslope
+		YYYY   = os.date("!%Y"),
+		MM     = os.date("!%m"),
+		DD     = os.date("!%d"),
+		MAXH   = string.format("%d", maxheight),
+		MAXS   = string.format("%d", maxslope),
+		H      = string.format("%d", height),
+		S      = string.format("%d", slope)
 	}
 
 	defs = ""
