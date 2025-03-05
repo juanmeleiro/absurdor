@@ -133,9 +133,13 @@ if args.command == "report" then
 	end
 
 	local news = {}
-	local datecmd = io.popen("date +%s -d 'last monday'", 'r')
+	-- local datecmd = io.popen("date +%s -d 'last monday'", 'r')
+	local now = os.date("%Y-%m-%d")
+	local delta = os.date("-%u days -8 days")
+	local datecmd = io.popen(string.format("date -d '%s %s' +%%s", now, delta), 'r')
 	local lastweek = tonumber(datecmd:read('*a'))
 	datecmd:close()
+
 	for i,e in ipairs(log) do
 		if e.when > lastweek then
 			table.insert(news, e)
