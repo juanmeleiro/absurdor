@@ -154,6 +154,7 @@ if args.command == "report" then
 		failed = true
 		if not pushed[w] then
 			height = 0
+			slope = 1
 			plot[w] = 0
 		end
 	end
@@ -180,7 +181,7 @@ if args.command == "report" then
 
 	f = io.open(tmpname, "a")
 
-	f:write("EVENTS SINCE LAST WEEK\n")
+	f:write("LATEST EVENTS\n")
 	table.sort(news, function(e0, e1) return e0.when > e1.when end)
 	for i,e in ipairs(news) do
 		f:write(fmt_event(e) .. "\n")
