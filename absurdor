@@ -234,6 +234,7 @@ if args.command == "report" then
 		os.execute(string.format("cat %s", tmpname))
 		os.remove(tmpname)
 	else
+		os.execute(string.format("vis %s", tmpname))
 		os.execute(string.format("neomutt -H %s -E", tmpname))
 
 		if yn("Archive report? [Yn] ") then
