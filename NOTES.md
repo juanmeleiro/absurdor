@@ -2,7 +2,8 @@
 
 ## Todo
 
-Refactor `fmt_event` to use a function per event type.
+- Refactor `fmt_event` to use a function per event type.
+- Add a `seq` number to events to order them if having the same timestamp
 
 ## Achievements
 

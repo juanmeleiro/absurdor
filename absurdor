@@ -69,9 +69,30 @@ if args.command == "report" then
 	local maxslope = 1
 	local maxheight = 0
 
+	-- table.sort(log, function(e0, e1)
+	-- 	if e0.when and e1.when then
+	-- 		return e0.when < e1.when
+	-- 	else
+	-- 		error("Event doesn't contain timestamp.")
+	-- 	end
+	-- end)
+    -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	-- Cannot use this and must rely on the JSON table order. Why?
+	-- Lua's sort algorithm is not stable (see
+	-- https://www.lua.org/manual/5.4/manual.html#pdf-table.sort). So
+	-- there's no guarantee that the order of events with the same
+	-- timestamp will be preserved. But this is important, because for
+	-- now it's the only way to tell which events happened “first”
+	-- in a given message. The fix should be to add a `seq` field to
+	-- each event which must be incremented for each recorded event
+	-- having the same timestamp as any other already there. Then,
+	-- the ordering would be lexicographical; first with the `.when`
+	-- field, then with the `.seq` field.
+
 	if #log > 0 then
 		start = unix2week(log[1].when)
 		max = start
+		plot[max] = height
 	end
 
 	for i,e in ipairs(log) do
@@ -115,7 +136,7 @@ if args.command == "report" then
 				players[e.who] = 1
 			end
 		elseif e.what == "transfer" then
-			die(e.payed < veblen.cost, string.format("Recorded transfer by %s used less spendies (%d) than the current Veblen cost (%s)", e.who, e.payed, veblen.cost))
+			die(e.payed < veblen.cost, string.format("Recorded transfer at %s by %s used less spendies (%d) than the current Veblen cost (%s)", os.date("%Y-%m-%d %H:%M", e.when), e.who, e.payed, veblen.cost))
 			if veblen.current then table.insert(veblen.history, veblen.current) end
 			veblen.current = {who = e.who, payed = e.payed, cost = veblen.cost, when = e.when, what = "transfer"}
 			veblen.cost = e.payed + 1
@@ -126,7 +147,7 @@ if args.command == "report" then
 			veblen.cost = e.value
 		elseif e.what == "report" then
 			veblen.cost = e.cost or veblen.cost
-			height = e.height or e.height
+			height = e.height or height
 			last = e.when
 			slope = e.slope or 1
 		end
