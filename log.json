@@ -2033,5 +2033,13 @@
     "when": 1743363168,
     "where": "10d36e63-5975-4c02-88cc-41501ddbf91e@gmail.com",
     "who": "Murphy"
+  },
+  {
+    "cost": 21,
+    "height": 7,
+    "owner": "Ben",
+    "slope": 3,
+    "what": "report",
+    "when": 1743430718
   }
 ]
