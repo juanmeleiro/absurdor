@@ -4,6 +4,8 @@
 
 - Refactor `fmt_event` to use a function per event type.
 - Add a `seq` number to events to order them if having the same timestamp
+- Add a list of significant changes to gameplay to website
+- Change boulder graph to show height from latest slope-based reset
 
 ## Achievements
 

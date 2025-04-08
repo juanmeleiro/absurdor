@@ -1,6 +1,0 @@
-#01 FIX WEEKS
-=============
-
-Fix week-counting. Now, weeks are counted from epoch, which was a thursday
-(not the beginning of a week). Instead, make it so weeks are correctly
-aligned.
