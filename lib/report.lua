@@ -57,6 +57,8 @@ end
 local modules = {}
 modules.Header = require "lib.report.Header"
 modules.Banner = require "lib.report.Banner"
+modules.Latest = require "lib.report.Latest"
+
 return {
 	modules = modules
 }
