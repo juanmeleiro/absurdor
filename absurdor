@@ -66,6 +66,7 @@ if args.command == "report" then
 	r:add_module(report.modules.Banner)
 	r:add_module(report.modules.Latest)
 	r:add_module(report.modules.Veblen)
+	r:add_module(report.modules.Footer)
 
 	local tmpfn = ".tmp"
 	local tmp = io.open(tmpfn, "w")
