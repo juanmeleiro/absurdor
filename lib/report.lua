@@ -60,6 +60,7 @@ modules.Banner = require "lib.report.Banner"
 modules.Latest = require "lib.report.Latest"
 modules.Veblen = require "lib.report.Veblen"
 modules.Footer = require "lib.report.Footer"
+modules.TopPushers = require "lib.report.TopPushers"
 
 return {
 	modules = modules
