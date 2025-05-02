@@ -1,53 +1,60 @@
-local banner = {
-	filter = function(self, e) return e.what == "push" end
-	digest = function(self, e)
-		local w = nil -- calculate week of timestamp e.when
-		if self.pushed[w-1] or self.pushed[w] or week2sec(sec2week(e.when)) < 1693159683 then
-			-- At 1693159683 seconds from Unix epoch, the governing
-			-- rule was changed so that the Boulder falls to zero
-			-- if it was not pushed the previous week. However, the
-			-- change is not retroactive; hence the magic number.
-			height = (height + 1)
-		else
-			height = 1
-		end
-		self.pushed[w] = true
-	end,
-	render = function(self, out)
-		vars = {
-			YYYY = os.date("!%Y"),
-			MM = os.date("!%m"),
-			DD = os.date("!%d"),
-			N = height
-		}
+local date = require "date"
+local Module = require "lib/report/Module"
+require "lib.log"
 
-		defs = ""
+-- Generic interface
+Report = {}
 
-		for k, v in pairs(vars) do
-			defs = defs .. string.format(" --define=%s=%s", k, v)
-		end
+function Report:new(r)
+	local r = r or {}
+	setmetatable(r, self)
+	r.modules = {}
+	self.__index = self
+	return r
+end
 
-		tmpname = ".tmp"
-		-- Height banner
-		os.execute(string.format("m4 %s templates/banner.m4 >> %s", defs, tmpname))
-	end,
-	height = 0,
-	pushed = {}
-}
-
-function report(modules, log, out)
-
-	-- Precompute data
-	for _,e in ipairs(log) do
-		for _,m in ipairs(modules) do
-			if m:filter(e) then
-				m:digest(e)
-			end
-		end
+function Report:add_module(m)
+	if self.closed then
+		error("Tried adding module after processing events.")
 	end
+	table.insert(self.modules, m:new())
+end
 
-	-- Render data
-	for _,m in ipairs(modules) do
+function Report:process(e)
+	self.closed = true
+	for _,m in ipairs(self.modules) do
+		m:process(e)
+	end
+end
+
+function Report:render(out)
+	for _,m in ipairs(self.modules) do
 		m:render(out)
 	end
 end
+
+function Report:report(log, out)
+	for _,e in ipairs(log) do
+		self:process(e)
+	end
+	self:render(out)
+end
+
+function Report:log()
+	local rec = {}
+	for _,m in ipairs(self.modules) do
+		for k in m:keys() do
+			rec[k] = m:log(k)
+		end
+	end
+	rec.when = os.time()
+	rec.what = "report"
+	return rec
+end
+
+-- Modules
+
+local modules = {}
+return {
+	modules = modules
+}
