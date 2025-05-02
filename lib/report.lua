@@ -55,6 +55,7 @@ end
 -- Modules
 
 local modules = {}
+modules.Header = require "lib.report.Header"
 return {
 	modules = modules
 }
