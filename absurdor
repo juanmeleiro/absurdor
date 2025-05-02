@@ -8,13 +8,16 @@ local record = require "lib.record"
 local pprint = require("pprint").pprint
 local date = require "date"
 
-require "lib.util"
-require "lib.log"
+local report = require "lib/report"
+require "lib/util"
+require "lib/log"
 
 local parser = argparse("absurdor", "Manage Absurdor duties")
 	:command_target("command")
+
 local commands = {}
 
+-- Report
 commands.report = parser:command("report", "Generate and send absurdor report")
 commands.report:flag("-p", "Print report, but do not send")
 commands.report:flag("-d", "Plot the difference, not the height")
@@ -22,8 +25,12 @@ commands.report:option("-t", "Which template to use")
 	:default("templates/banner.m4")
 	:argname("template")
 	:target("template")
+
+-- Record
 commands.record = parser:command("record", "Record events")
 	:command_target("what")
+
+---- Push
 commands.push = commands.record:command("push", "A push of The Boulder")
 commands.push:argument("who", "Name of the player")
 commands.push:argument("when", "Timestamp of boulder push")
@@ -31,6 +38,7 @@ commands.push:argument("when", "Timestamp of boulder push")
 commands.push:option("-m", "Message ID where push happened"):target("where")
 commands.log = parser:command("log", "Display log")
 
+---- Transfer
 commands.transfer = commands.record:command("transfer", "Transfer the Veblen")
 commands.transfer:argument("who", "Name of the player")
 commands.transfer:argument("when", "When the transfer took place")
@@ -39,6 +47,7 @@ commands.transfer:argument("payed", "Amount spent on the transfer")
 	:convert(tonumber)
 commands.transfer:option("-m", "Message ID where transfer happened"):target("where")
 
+---- Devalue
 commands.devalue = commands.record:command("devalue", "Devalue the Veblen")
 commands.devalue:argument("who", "Name of the player")
 commands.devalue:argument("when", "When the devalueing took place")
@@ -52,224 +61,32 @@ log = decodewith(json.decode, fn)
 
 if args.command == "report" then
 
-	height = 0
-	local plot = {}
-	local pushed = {}
-	local max = 1
-	local failed = false
-	local who = {}
-	local players = {}
-	local veblen = {
-		cost = 1,
-		history = {},
-		namewidth = 0
-	}
-	local last = 0
-	local slope
-	local maxslope = 1
-	local maxheight = 0
+	local r = Report:new()
+	r:add_module(report.modules.Header)
+	r:add_module(report.modules.Banner)
+	r:add_module(report.modules.Latest)
+	r:add_module(report.modules.TopPushers)
+	r:add_module(report.modules.Veblen)
+	r:add_module(report.modules.Footer)
 
-	-- table.sort(log, function(e0, e1)
-	-- 	if e0.when and e1.when then
-	-- 		return e0.when < e1.when
-	-- 	else
-	-- 		error("Event doesn't contain timestamp.")
-	-- 	end
-	-- end)
-    -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-	-- Cannot use this and must rely on the JSON table order. Why?
-	-- Lua's sort algorithm is not stable (see
-	-- https://www.lua.org/manual/5.4/manual.html#pdf-table.sort). So
-	-- there's no guarantee that the order of events with the same
-	-- timestamp will be preserved. But this is important, because for
-	-- now it's the only way to tell which events happened “first”
-	-- in a given message. The fix should be to add a `seq` field to
-	-- each event which must be incremented for each recorded event
-	-- having the same timestamp as any other already there. Then,
-	-- the ordering would be lexicographical; first with the `.when`
-	-- field, then with the `.seq` field.
-
-	if #log > 0 then
-		start = unix2week(log[1].when)
-		max = start
-		plot[max] = height
-	end
-
-	for i,e in ipairs(log) do
-		if e.what == "push" then
-			local w = unix2week(e.when)
-			if (unix2week(1739754105) <= w and plot[w] == 0 and plot[unix2week(e.when - 7*24*60*60)] < slope) or
-			   (unix2week(1693159683) <= w and w < unix2week(1739754105) and not (pushed[unix2week(e.when - 7*24*60*60)] or pushed[w])) or
-			   (w < unix2week(1693159683) and height == 100)
-                -- At 1739754105 seconds from Unix epoch, the governing rule was changed
-                -- so that the Boulder falls to zero if it was not pushed as much as its
-                -- slope the previous week. However, the change is not retroactive; hence
-                -- the magic number.
-
-				-- At 1693159683 seconds from Unix epoch, the governing
-				-- rule was changed so that the Boulder falls to zero
-				-- if it was not pushed the previous week. However, the
-				-- change is not retroactive; hence the magic number.
-			then
-				height = 1
-				slope = 1
-			else
-				height = (height + 1)
-				maxheight = math.max(height, maxheight)
-			end
-			plot[w] = (plot[w] or 0) + 1
-			if slope and plot[w] > slope then
-				slope = plot[w]
-				if e.when > 1739754105 then
-					maxslope = math.max(slope, maxslope)
-				end
-			end
-			who[w] = who[w] or {}
-			table.insert(who[w], e.who)
-			pushed[w] = true
-			if height >= plot[max] then
-				max = w
-			end
-			if players[e.who] then
-				players[e.who] = players[e.who] + 1
-			else
-				players[e.who] = 1
-			end
-		elseif e.what == "transfer" then
-			die(e.payed < veblen.cost, string.format("Recorded transfer at %s by %s used less spendies (%d) than the current Veblen cost (%s)", os.date("%Y-%m-%d %H:%M", e.when), e.who, e.payed, veblen.cost))
-			if veblen.current then table.insert(veblen.history, veblen.current) end
-			veblen.current = {who = e.who, payed = e.payed, cost = veblen.cost, when = e.when, what = "transfer"}
-			veblen.cost = e.payed + 1
-			veblen.namewidth = math.max(veblen.namewidth, string.len(e.who))
-		elseif e.what == "devalue" then
-			local val = math.ceil(veblen.cost/2)
-			table.insert(veblen.history, {when = e.when, what = "devalue", value = e.value})
-			veblen.cost = e.value
-		elseif e.what == "report" then
-			veblen.cost = e.cost or veblen.cost
-			height = e.height or height
-			last = e.when
-			slope = e.slope or 1
-		end
-	end
-
-	local news = {}
-	-- local datecmd = io.popen("date +%s -d 'last monday'", 'r')
-	local now = os.date("%Y-%m-%d")
-	local delta = os.date("-%u days -8 days")
-	local datecmd = io.popen(string.format("date -d '%s %s' +%%s", now, delta), 'r')
-	local lastweek = tonumber(datecmd:read('*a'))
-	datecmd:close()
-
-	for i,e in ipairs(log) do
-		if e.when > lastweek then
-			table.insert(news, e)
-		end
-	end
-
-	table.insert(veblen.history, veblen.current)
-
-	local t = os.time()
-	local w = unix2week(t)
-	if (plot[unix2week(t - 7*24*60*60)] < slope) then
-		failed = true
-		if not pushed[w] then
-			height = 0
-			slope = 1
-			plot[w] = 0
-		end
-	end
-
-	vars = {
-		YYYY   = os.date("!%Y"),
-		MM     = os.date("!%m"),
-		DD     = os.date("!%d"),
-		MAXH   = string.format("%d", maxheight),
-		MAXS   = string.format("%d", maxslope),
-		H      = string.format("%d", height),
-		S      = string.format("%d", slope)
-	}
-
-	defs = ""
-
-	for k, v in pairs(vars) do
-		defs = defs .. string.format(" --define=%s=%s", k, v)
-	end
-
-	tmpname = ".tmp"
-	-- Height banner
-	os.execute(string.format("m4 %s %s >> %s", defs, args.template, tmpname))
-
-	f = io.open(tmpname, "a")
-
-	f:write("LATEST EVENTS\n")
-	table.sort(news, function(e0, e1) return e0.when > e1.when end)
-	for i,e in ipairs(news) do
-		f:write(fmt_event(e) .. "\n")
-	end
-	f:write("\n")
-
-	-- Top pushers
-	f:write("TOP PUSHERS\n")
-	local scores = {}
-	for p,v in pairs(players) do
-		table.insert(scores, {player = p, pushes = v})
-	end
-	table.sort(scores, function (s0, s1) return s0.pushes > s1.pushes end)
-	for i,s in ipairs(scores) do
-		f:write(string.format("#%02d %2d %s %s\n", i, s.pushes, string.rep("=", s.pushes), s.player))
-	end
-	f:write("\n")
-
-	f:write("\n----------------------------------------------------------------------\nTHE VEBLEN\n\n")
-	f:write("          The Veblen\n")
-	f:write(string.format("          is owned by %s\n", veblen.current.who))
-	f:write(string.format("          and costs %d spendies\n\n", veblen.cost))
-
-	f:write("          It is shiny.\n")
-	f:write("          It is round (and thus pointless).\n")
-	f:write("          It is admired.\n")
-	f:write("          It has infinite points and is thus no longer pointless.\n")
-	f:write("            (N.B. do note that that's a circle)\n")
-	f:write("\n")
-
-	f:write("HISTORY\n")
-	table.sort(veblen.history, function(x,y) return x.when > y.when end)
-	for _,e in ipairs(veblen.history) do
-		if e.what == "transfer" then
-			f:write(string.format("[%s] %s %s%s\n", os.date("!%Y-%m-%d %H:%M %z", e.when), string.rep(" ", veblen.namewidth - string.len(e.who)) .. e.who, string.rep("$", e.cost), string.rep("+", e.payed - e.cost)))
-		elseif e.what == "devalue" then
-			f:write(string.format("[%s] %s %s\n", os.date("!%Y-%m-%d %H:%M %z", e.when), string.rep(" ", veblen.namewidth), string.rep("$", e.value)))
-		end
-	end
-	f:write('[2024-07-18 02:59 +0000] The Veblen is created')
-	f:write("\n\n")
-
-	f:write("----------------------------------------------------------------------\n")
-	f:write("Do you have any suggestions on what I should put on the report?\n")
-	f:write("Send them to me!\n")
-	f:write("======================================================================\n")
-	f:close()
+	local tmpfn = ".tmp"
+	local tmp = io.open(tmpfn, "w")
+	r:report(log, tmp)
+	tmp:close()
 
 	if args.p then
-		os.execute(string.format("cat %s", tmpname))
-		os.remove(tmpname)
+		os.execute(string.format("cat %s", tmpfn))
+		os.remove(tmpfn)
+		pprint(r:log())
 	else
-		os.execute(string.format("vis %s", tmpname))
-		os.execute(string.format("neomutt -H %s -E", tmpname))
+		os.execute(string.format("vis %s", tmpfn))
+		os.execute(string.format("neomutt -H %s -E", tmpfn))
 
 		if yn("Archive report? [Yn] ") then
-			table.insert(log, {
-							 when = os.time(),
-							 what = "report",
-							 height = height,
-							 cost = veblen.cost,
-							 owner = veblen.current.who,
-							 slope = slope
-			})
-			os.rename(tmpname, string.format("archive/%s", os.date("!%F")))
+			table.insert(log, r:log())
+			os.rename(tmpfn, string.format("archive/%s", os.date("!%F")))
 		else
-			os.remove(tmpname)
+			os.remove(tmpfn)
 		end
 	end
 elseif args.command == "record" then
