@@ -1,0 +1,83 @@
+Date: Mon, 5 May 2025 17:19:27 -0300
+From: juan <juan@juanmeleiro.mat.br>
+To: agora-official@agoranomic.org
+Subject: [Absurdor] The State of the Absurd
+Message-ID: <ntdSTZY9@juanmeleiro.mat.br>
+Mail-Followup-To: agora-official@agoranomic.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Mutt-Resume-Draft: 1
+
+I have finally refactored the report generation logic. Here's an excerpt
+of the commit history:
+
+     4062a390c527 Add Mail module
+     5b177fcfc075 Merge refactoring-reports into main
+     f5d06a69c6f2 Add a TopPushers module
+     ea873c3428f6 Add a Footer module
+     3e7429f424c8 Add a Veblen module
+     cf07005293e5 Add a Latest module
+     2e3e7b47b659 Add a Banner module
+     fa88b9af835f Add a Header module
+     0196901c7343 Abstract reporting into modules
+
+I appreciate feedback! Something missing that you'd like to see
+ported? Tell me!
+
+======================================================================
+absurdor: juan          The State of the Absurd             2025-05-05                     
+======================================================================
+
+            #####     _/
+           #######   /
+          #########  /
+         |#########_/                 The Boulder
+        /  #######/                      is at 5
+       /_   #####/                     Its Slope is 2
+      / /O_/   /
+      | /_    /                 It has been at 217
+      /_/\.  /                  Moving as fast as 6
+     //  // _/
+    /‘  /‘_/
+   /  __`/
+   `_/
+   /
+
+----------------------------------------------------------------------
+LATEST EVENTS
+
+[2025-04-30 18:17:54 +0000] ais523 pushed the boulder
+[2025-05-02 13:49:03 +0000] Cosmo pushed the boulder
+[2025-05-04 20:59:08 +0000] Murphy pushed the boulder
+
+----------------------------------------------------------------------
+TOP PUSHERS (since things got hard)
+
+#1  11 =========== Murphy
+#2   8 ======== ais523
+#3   5 ===== Ben
+#4   4 ==== Cosmo
+#5   2 == Liz Wake
+#6   2 == kiako
+#7   1 = 4st
+#8   1 = oliver.n
+#9   1 = juniper
+#10  1 = RadicalRose
+
+----------------------------------------------------------------------
+THE VEBLEN
+
+          The Veblen
+          is owned by Ben
+          and costs 21 spendies
+
+----------------------------------------------------------------------
+Do you have any suggestions on what I should put on the report?
+Send them to me!
+======================================================================
+
+-- 
+juan
+Registrar, Absurdor
