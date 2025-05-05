@@ -55,6 +55,7 @@ end
 -- Modules
 
 local modules = {}
+modules.Mail = require "lib.report.Mail"
 modules.Header = require "lib.report.Header"
 modules.Banner = require "lib.report.Banner"
 modules.Latest = require "lib.report.Latest"

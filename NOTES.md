@@ -1,5 +1,12 @@
 # Notes
 
+```
+Date:
+To:
+From:
+Subject:
+```
+
 ## Todo
 
 - Refactor `fmt_event` to use a function per event type.

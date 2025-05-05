@@ -62,6 +62,7 @@ log = decodewith(json.decode, fn)
 if args.command == "report" then
 
 	local r = Report:new()
+	r:add_module(report.modules.Mail)
 	r:add_module(report.modules.Header)
 	r:add_module(report.modules.Banner)
 	r:add_module(report.modules.Latest)
