@@ -20,11 +20,6 @@ local commands = {}
 -- Report
 commands.report = parser:command("report", "Generate and send absurdor report")
 commands.report:flag("-p", "Print report, but do not send")
-commands.report:flag("-d", "Plot the difference, not the height")
-commands.report:option("-t", "Which template to use")
-	:default("templates/banner.m4")
-	:argname("template")
-	:target("template")
 
 -- Record
 commands.record = parser:command("record", "Record events")
