@@ -2,12 +2,8 @@ local date = require "date"
 
 local Module = require "lib.report.Module"
 
-local now = date(os.date())
-local this_monday = now:adddays(- (now:getisoweekday() - 1))
-local previous_monday = this_monday:adddays(-7)
-
 local Latest = Module:new({
-	start = date.diff(previous_monday, date.epoch()):spanseconds(),
+	start = -math.huge,
 	events = {}
 })
 Latest:add_processor("push", function(self, e)
@@ -16,9 +12,8 @@ Latest:add_processor("push", function(self, e)
 	end
 end)
 Latest:add_processor("report", function(self, e)
-	if e.when >= self.start then
-		table.insert(self.events, e)
-	end
+	self.start = e.when
+	self.events = {e}
 end)
 function Latest:render(out)
 	out:write(string.rep("-", 70) .. "\n")
