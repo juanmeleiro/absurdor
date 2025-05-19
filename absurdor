@@ -20,6 +20,7 @@ local commands = {}
 -- Report
 commands.report = parser:command("report", "Generate and send absurdor report")
 commands.report:flag("-p", "Print report, but do not send")
+commands.report:flag("-c", "Include commits in report")
 
 -- Record
 commands.record = parser:command("record", "Record events")
@@ -63,6 +64,9 @@ if args.command == "report" then
 	r:add_module(report.modules.Latest)
 	r:add_module(report.modules.TopPushers)
 	r:add_module(report.modules.Veblen)
+	if args.c then
+		r:add_module(report.modules.Commits)
+	end
 	r:add_module(report.modules.Footer)
 
 	local tmpfn = ".tmp"

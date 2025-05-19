@@ -62,6 +62,7 @@ modules.Latest = require "lib.report.Latest"
 modules.Veblen = require "lib.report.Veblen"
 modules.Footer = require "lib.report.Footer"
 modules.TopPushers = require "lib.report.TopPushers"
+modules.Commits = require "lib.report.Commits"
 
 return {
 	modules = modules
