@@ -1,0 +1,79 @@
+Date: Mon, 19 May 2025 17:03:56 -0300
+From: juan <juan@juanmeleiro.mat.br>
+To: agora-official@agoranomic.org
+Subject: [Absurdor] The State of the Absurd
+Message-ID: <nvN2gTB9@juanmeleiro.mat.br>
+Mail-Followup-To: agora-official@agoranomic.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Mutt-Resume-Draft: 1
+
+See new Selected Commits section below!
+
+======================================================================
+absurdor: juan          The State of the Absurd             2025-05-19                     
+======================================================================
+
+            #####     _/
+           #######   /
+          #########  /
+         |#########_/                 The Boulder
+        /  #######/                      is at 11
+       /_   #####/                     Its Slope is 2
+      / /O_/   /
+      | /_    /                 It has been at 217
+      /_/\.  /                  Moving as fast as 6
+     //  // _/
+    /‘  /‘_/
+   /  __`/
+   `_/
+   /
+
+----------------------------------------------------------------------
+LATEST EVENTS
+
+[2025-05-13 02:44:18 +0000] Reported boulder at height 8 and slope at 2
+[2025-05-18 17:20:56 +0000] Murphy pushed the boulder
+[2025-05-19 06:40:42 +0000] Cosmo pushed the boulder
+[2025-05-19 08:40:38 +0000] ais523 pushed the boulder
+
+----------------------------------------------------------------------
+TOP PUSHERS (since things got hard)
+
+#1  13 ============= Murphy
+#2  10 ========== ais523
+#3   6 ====== Cosmo
+#4   5 ===== Ben
+#5   2 == kiako
+#6   2 == Liz Wake
+#7   1 = oliver.n
+#8   1 = RadicalRose
+#9   1 = 4st
+#10  1 = juniper
+
+----------------------------------------------------------------------
+THE VEBLEN
+
+          The Veblen
+          is owned by Ben
+          and costs 21 spendies
+
+----------------------------------------------------------------------
+LATEST COMMITS
+
+2025-05-19 19:33:51.000 +00:00 cee861e2129a Add a Commits module
+2025-05-19 20:01:20.000 +00:00 1329ced68961 Show recent events counting from last report
+
+   Aiming to fix last week's issues, all events since the last report
+   are shown as recent events.
+
+----------------------------------------------------------------------
+Do you have any suggestions on what I should put on the report?
+Send them to me!
+======================================================================
+
+-- 
+juan
+Registrar, Absurdor
