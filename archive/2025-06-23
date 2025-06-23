@@ -1,0 +1,83 @@
+Date: Mon, 23 Jun 2025 14:40:33 -0300
+From: juan <juan@juanmeleiro.mat.br>
+To: agora-official@agoranomic.org
+Subject: [Absurdor] The State of the Absurd
+Message-ID: <nzmrrrb0@juanmeleiro.mat.br>
+Mail-Followup-To: agora-official@agoranomic.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Mutt-Resume-Draft: 1
+
+======================================================================
+absurdor: juan          The State of the Absurd             2025-06-23                     
+======================================================================
+
+            #####     _/
+           #######   /
+          #########  /
+         |#########_/                 The Boulder
+        /  #######/                      is at 29
+       /_   #####/                     Its Slope is 3
+      / /O_/   /
+      | /_    /                 It has been at 217
+      /_/\.  /                  Moving as fast as 6
+     //  // _/
+    /‘  /‘_/
+   /  __`/
+   `_/
+   /
+
+----------------------------------------------------------------------
+EDITORIAL
+
+I have fixed the logic that updates the slope. It should now be
+working. Note that one of the pushes accounted for in this report was
+made at a time in the past of the previous report, which is why it
+doesn't show up in “LATEST EVENTS”.
+
+----------------------------------------------------------------------
+LATEST EVENTS
+
+[2025-06-16 16:48:37 +0000] Reported boulder at height 23 and slope at 2
+[2025-06-18 18:23:01 +0000] Cosmo pushed the boulder
+[2025-06-18 18:40:57 +0000] ais523 pushed the boulder
+[2025-06-22 18:16:23 +0000] Murphy pushed the boulder
+[2025-06-22 23:09:15 +0000] Ben pushed the boulder
+[2025-06-23 00:38:58 +0000] ais523 pushed the boulder
+
+----------------------------------------------------------------------
+TOP PUSHERS (since things got hard)
+
+#1  17 ================= Murphy
+#2  15 =============== ais523
+#3  10 ========== Cosmo
+#4   8 ======== Ben
+#5   3 === kiako
+#6   2 == RadicalRose
+#7   2 == Liz Wake
+#8   1 = 4st
+#9   1 = oliver.n
+#10  1 = juniper
+
+----------------------------------------------------------------------
+THE VEBLEN
+
+          The Veblen
+          is owned by Ben
+          and costs 11 spendies
+
+----------------------------------------------------------------------
+LATEST COMMITS
+
+2025-06-23 17:04:36.000 +00:00 e713b51febfe Fix Slope logic to conform to rules
+
+----------------------------------------------------------------------
+Do you have any suggestions on what I should put on the report?
+Send them to me!
+======================================================================
+
+-- 
+juan
+Registrar, Absurdor
