@@ -68,10 +68,35 @@ function format(fmt, dict, sett)
    return res
 end
 
-function unix2week(s)
+function unix_to_week(s)
 	return os.date("%GW%V", s)
 end
 
-function prevweek(w)
-	return date.diff(date(w):adddays(-7), date.epoch()):spanseconds()
+function year_ending_weekday(y)
+	return (y + math.floor(y/4) - math.floor(y/100) + math.floor(y/400)) % 7
+end
+
+function weeks_in_year(y)
+	if year_ending_weekday(y) == 4 or year_ending_weekday(y-1) == 3 then
+		return 53
+	else
+		return 52
+	end
+end
+
+function parse_week(w)
+	return string.match(w, "(%d+)W(%d+)")
+end
+
+function format_week(y, w)
+	return string.format("%dW%d", y, w)
+end
+
+function previous_week(w)
+	local year, week = parse_week(w)
+	if week == 1 then
+		return format_week(year - 1, weeks_in_year(year - 1))
+	else
+		return format_week(year, week - 1)
+	end
 end
