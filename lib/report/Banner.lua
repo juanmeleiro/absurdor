@@ -5,27 +5,23 @@ local Banner = Module:new({
 	slope = 1,
 	max_height = 0,
 	max_slope = 1,
-	weekly_pushes = {},
-	weekly_slope = {}
+	weekly_pushes = {}
 })
 
 function maybe_start_week(data, w)
 	if data.weekly_pushes[w] == nil then -- Starting a new week. Need to initialize it:
 		local p = previous_week(w)
 		if data.weekly_pushes[p] then -- Last week exists. Check conditions for falling:
-			if data.weekly_pushes[p] >= data.weekly_slope[p] then -- Last week was successful
-				data.weekly_slope[w] = data.weekly_slope[p] + 1
+			if data.weekly_pushes[p] >= data.slope then -- Last week was successful
 				data.slope = data.slope + 1
 				data.weekly_pushes[w] = 0
 			else -- Last week failed.
-				data.weekly_slope[w] = 1 -- Starting slope.
 				data.weekly_pushes[w] = 1 -- Counting the current push.
 				data.height = 1
 				data.slope = 1
 			end
 		else -- First week ever.
-			data.weekly_pushes[w] = 1
-			data.weekly_slope[w] = 1
+			data.weekly_pushes[w] = 0
 		end
 	end
 end
