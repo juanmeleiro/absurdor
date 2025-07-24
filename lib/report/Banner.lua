@@ -14,6 +14,7 @@ function maybe_start_week(data, w)
 		if data.weekly_pushes[p] then -- Last week exists. Check conditions for falling:
 			if data.weekly_pushes[p] >= data.slope then -- Last week was successful
 				data.slope = data.slope + 1
+				data.max_slope = math.max(data.max_slope, data.slope)
 				data.weekly_pushes[w] = 0
 			else -- Last week failed.
 				data.weekly_pushes[w] = 1 -- Counting the current push.
