@@ -6,7 +6,7 @@ Veblen = Module:new({
 })
 
 Veblen:add_processor("transfer", function(self, e)
-	self.cost = e.payed
+	self.cost = e.payed + 1
 	self.owner = e.who
 end)
 
