@@ -1,4 +1,5 @@
 local Module = require "lib/report/Module"
+local pprint = require("pprint").pprint
 
 local Banner = Module:new({
 	height = 0,
@@ -69,7 +70,6 @@ function Banner:render(out)
 ]]
 
 	out:write(string.format(template, self.height, self.slope, self.max_height, self.max_slope))
-
 end
 
 Banner:add_field("height", function(self)
