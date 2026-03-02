@@ -3504,5 +3504,13 @@
     "when": 1772403130,
     "where": "4d9abbce-f8ba-48a1-9cb6-5698693eddd3@gmail.com",
     "who": "Murphy"
+  },
+  {
+    "cost": 91,
+    "height": 4,
+    "owner": "Mischief",
+    "slope": 2,
+    "what": "report",
+    "when": 1772474294
   }
 ]
