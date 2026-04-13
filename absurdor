@@ -50,6 +50,9 @@ commands.devalue:argument("when", "When the devalueing took place")
 	:convert(maildate)
 commands.devalue:option("-m", "Message ID where devalue happened"):target("where")
 
+-- Push
+commands.report = parser:command("push", "Push the boulder")
+
 local args = parser:parse()
 
 fn = "log.json"
@@ -95,6 +98,21 @@ elseif args.command == "log" then
 	for _,e in ipairs(log) do
 		io.write(fmt_event(e).."\n")
 	end
+elseif args.command == "push" then
+	local template = [[
+Date: %s
+To: agora-business@agoranomic.org
+From: juan <juan@juanmeleiro.mat.br>
+Subject: [@Absurdor] Helping
+
+I push the boulder.
+]]
+	local tmpfn = ".tmp"
+	local tmp = io.open(tmpfn, "w")
+	tmp:write(string.format(template, os.date("%a,%e %b %Y %H:%M:%H %z")))
+	tmp:close()
+	os.execute(string.format("neomutt -H %s -E", tmpfn))
+	os.remove(tmpfn)
 end
 
 encodewith(json.encode, fn, log)
