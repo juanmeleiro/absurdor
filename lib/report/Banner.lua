@@ -6,7 +6,8 @@ local Banner = Module:new({
 	slope = 1,
 	max_height = 0,
 	max_slope = 1,
-	weekly_pushes = {}
+	weekly_pushes = {},
+	fell_last_week = false
 })
 
 function maybe_start_week(data, w)
@@ -17,10 +18,12 @@ function maybe_start_week(data, w)
 				data.slope = data.slope + 1
 				data.max_slope = math.max(data.max_slope, data.slope)
 				data.weekly_pushes[w] = 0
+				fell_last_week = false
 			else -- Last week failed.
 				data.weekly_pushes[w] = 1 -- Counting the current push.
 				data.height = 1
 				data.slope = 1
+				data.fell_last_week = true
 			end
 		else -- First week ever.
 			data.weekly_pushes[w] = 0
@@ -50,7 +53,9 @@ end)
 
 function Banner:render(out)
 	maybe_start_week(self, unix_to_week(os.time()))
-	local template = [[
+	local templates = 
+	{
+		regular = [[
 
             #####     _/
            #######   /
@@ -67,9 +72,31 @@ function Banner:render(out)
    `_/
    /
 
-]]
+]],
+		fall = [[
+                       / 
+  argh!    /   __,   /   
+        O.--../      /   
+      \ /\___=--.   /              The Boulder FELL!
+       "         \/                   It is at %d
+                 /                     Its Slope is %d
+   //  //      /        
+  / ####  //  /                 It has been at %d
+   ###### /  /                  Moving as fast as %d
+  ########   /          
+   ######  /            
+    #### /              
+     /                  
+   /                    
 
-	out:write(string.format(template, self.height, self.slope, self.max_height, self.max_slope))
+]]
+	}
+
+	if self.fell_last_week then
+		out:write(string.format(templates.fall, self.height, self.slope, self.max_height, self.max_slope))
+	else
+		out:write(string.format(template.regular, self.height, self.slope, self.max_height, self.max_slope))
+	end
 end
 
 Banner:add_field("height", function(self)
