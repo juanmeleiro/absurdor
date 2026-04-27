@@ -18,7 +18,7 @@ function maybe_start_week(data, w)
 				data.slope = data.slope + 1
 				data.max_slope = math.max(data.max_slope, data.slope)
 				data.weekly_pushes[w] = 0
-				fell_last_week = false
+				data.fell_last_week = false
 			else -- Last week failed.
 				data.weekly_pushes[w] = 1 -- Counting the current push.
 				data.height = 1
@@ -95,7 +95,7 @@ function Banner:render(out)
 	if self.fell_last_week then
 		out:write(string.format(templates.fall, self.height, self.slope, self.max_height, self.max_slope))
 	else
-		out:write(string.format(template.regular, self.height, self.slope, self.max_height, self.max_slope))
+		out:write(string.format(templates.regular, self.height, self.slope, self.max_height, self.max_slope))
 	end
 end
 
