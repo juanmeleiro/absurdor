@@ -7,10 +7,10 @@ function Mail:render(out)
 Date: %s
 To: agora-official@agoranomic.org
 From: juan <juan@juanmeleiro.mat.br>
-Subject: [Absurdor] The State of the Absurd
+Subject: [Absurdor] The State of the Absurd (%s)
 
 ]]
-	out:write(string.format(template, os.date("%a,%e %b %Y %H:%M:%H %z")))
+	out:write(string.format(template, os.date("%a,%e %b %Y %H:%M:%H %z"), os.date("%Y-%U")))
 end
 
 return Mail
