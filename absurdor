@@ -21,6 +21,7 @@ local commands = {}
 commands.report = parser:command("report", "Generate and send absurdor report")
 commands.report:flag("-p", "Print report, but do not send")
 commands.report:flag("-c", "Include commits in report")
+commands.report:flag("-w", "Use variant 'wow' for the report"):target("wow")
 
 -- Record
 commands.record = parser:command("record", "Record events")
@@ -51,7 +52,7 @@ commands.devalue:argument("when", "When the devalueing took place")
 commands.devalue:option("-m", "Message ID where devalue happened"):target("where")
 
 -- Push
-commands.report = parser:command("push", "Push the boulder")
+commands.push = parser:command("push", "Push the boulder")
 
 local args = parser:parse()
 
@@ -63,7 +64,7 @@ if args.command == "report" then
 	local r = Report:new()
 	r:add_module(report.modules.Mail)
 	r:add_module(report.modules.Header)
-	r:add_module(report.modules.Banner)
+	r:add_module(report.modules.Banner(args.wow))
 	r:add_module(report.modules.Latest)
 	r:add_module(report.modules.TopPushers)
 	r:add_module(report.modules.Veblen)
