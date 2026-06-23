@@ -1,0 +1,72 @@
+Date: Tue, 23 Jun 2026 14:45:18 -0300
+From: juan <juan@juanmeleiro.mat.br>
+To: agora-official@agoranomic.org
+Subject: [Absurdor] The State of the Absurd (2026w25)
+Message-ID: <ohfuhVC0@juanmeleiro.mat.br>
+Mail-Followup-To: agora-official@agoranomic.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Mutt-Resume-Draft: 1
+
+======================================================================
+absurdor: juan          The State of the Absurd       2026-06-23 14:44                     
+======================================================================
+
+            #####     _/
+           #######   /
+          #########  /
+         |#########_/                 The Boulder
+        /  #######/                      is at 8
+       /_   #####/                     Its Slope is 2
+      / /O_/   /
+      | /_    /                 It has been at 217
+      /_/\.  /                  Moving as fast as 8
+     //  // _/
+    /‘  /‘_/
+   /  __`/
+   `_/
+   /
+
+----------------------------------------------------------------------
+LATEST EVENTS
+
+[2026-06-16 12:37:55 +0000] Reported boulder at height 3 and slope at 1
+[2026-06-16 14:13:07 +0000] Cosmo pushed the boulder
+[2026-06-20 03:04:34 +0000] snail pushed the boulder
+[2026-06-20 06:38:51 +0000] ais523 pushed the boulder
+[2026-06-22 12:12:27 +0000] msh210 pushed the boulder
+[2026-06-22 15:13:51 +0000] Galle pushed the boulder
+
+----------------------------------------------------------------------
+TOP RECENT PUSHERS (with exponential decay!)
+
+#1  0.944 ============================ Galle
+#2  0.857 ========================= msh210
+#3  0.485 ============== ais523
+#4  0.334 ========== Cosmo
+#5  0.294 ======== Murphy
+#6  0.181 ===== snail
+#7  0.167 ===== Salad
+#8  0.133 ==== pizza723
+
+(The score is the average over all half-lifes of the scores obtained by
+each push contributing 1 with exponential decay with that half-life,
+rounding the time using which week it happened on.)
+
+----------------------------------------------------------------------
+THE VEBLEN
+
+          The Veblen
+          is owned by Murphy
+          and costs 24 spendies
+
+----------------------------------------------------------------------
+Do you have any suggestions on what I should put on the report?
+Send them to me!
+======================================================================
+
+-- 
+juan
+Registrar, Absurdor
