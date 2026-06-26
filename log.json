@@ -4133,5 +4133,19 @@
     "slope": 2,
     "what": "report",
     "when": 1782308788
+  },
+  {
+    "value": 12,
+    "what": "devalue",
+    "when": 1782413628,
+    "where": "CAPbU5yDowAmS-BUCUP1QMuCvUmTCHxz=GrTppUPh4r5Lk4D25A@mail.gmail.com",
+    "who": "msh210"
+  },
+  {
+    "payed": 20,
+    "what": "transfer",
+    "when": 1782413628,
+    "where": "CAPbU5yDowAmS-BUCUP1QMuCvUmTCHxz=GrTppUPh4r5Lk4D25A@mail.gmail.com",
+    "who": "msh210"
   }
 ]
