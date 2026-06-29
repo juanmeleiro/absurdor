@@ -1,0 +1,70 @@
+Date: Mon, 29 Jun 2026 17:00:56 -0300
+From: juan <juan@juanmeleiro.mat.br>
+To: agora-official@agoranomic.org
+Subject: [Absurdor] The State of the Absurd (2026w26)
+Message-ID: <oiQw-Sk8@juanmeleiro.mat.br>
+Mail-Followup-To: agora-official@agoranomic.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Mutt-Resume-Draft: 1
+
+======================================================================
+absurdor: juan          The State of the Absurd       2026-06-29 17:00                     
+======================================================================
+
+            #####     _/
+           #######   /
+          #########  /
+         |#########_/                 The Boulder
+        /  #######/                      is at 12
+       /_   #####/                     Its Slope is 3
+      / /O_/   /
+      | /_    /                 It has been at 217
+      /_/\.  /                  Moving as fast as 8
+     //  // _/
+    /‘  /‘_/
+   /  __`/
+   `_/
+   /
+
+----------------------------------------------------------------------
+LATEST EVENTS
+
+[2026-06-24 13:46:28 +0000] Reported boulder at height 9 and slope at 2
+[2026-06-28 03:37:51 +0000] ais523 pushed the boulder
+[2026-06-28 16:46:29 +0000] Salad pushed the boulder
+[2026-06-28 19:50:57 +0000] Murphy pushed the boulder
+
+----------------------------------------------------------------------
+TOP RECENT PUSHERS (with exponential decay!)
+
+#1  0.485 ============== ais523
+#2  0.447 ============= Galle
+#3  0.384 =========== Murphy
+#4  0.375 =========== msh210
+#5  0.357 ========== Salad
+#6  0.209 ====== Cosmo
+#7  0.097 == snail
+#8  0.083 == pizza723
+
+(The score is the average over all half-lifes of the scores obtained by
+each push contributing 1 with exponential decay with that half-life,
+rounding the time using which week it happened on.)
+
+----------------------------------------------------------------------
+THE VEBLEN
+
+          The Veblen
+          is owned by msh210
+          and costs 21 spendies
+
+----------------------------------------------------------------------
+Do you have any suggestions on what I should put on the report?
+Send them to me!
+======================================================================
+
+-- 
+juan
+Registrar, Absurdor
