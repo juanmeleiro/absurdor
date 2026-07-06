@@ -1,0 +1,73 @@
+Date: Mon, 6 Jul 2026 20:07:49 -0300
+From: juan <juan@juanmeleiro.mat.br>
+To: agora-official@agoranomic.org
+Subject: [Absurdor] The State of the Absurd (2026w27)
+Message-ID: <ojKIuneP@juanmeleiro.mat.br>
+Mail-Followup-To: agora-official@agoranomic.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Mutt-Resume-Draft: 1
+
+======================================================================
+absurdor: juan          The State of the Absurd       2026-07-06 06:13                     
+======================================================================
+
+            #####     _/
+           #######   /
+          #########  /
+         |#########_/                 The Boulder
+        /  #######/                      is at 21
+       /_   #####/                     Its Slope is 4
+      / /O_/   /
+      | /_    /                 It has been at 217
+      /_/\.  /                  Moving as fast as 8
+     //  // _/
+    /‘  /‘_/
+   /  __`/
+   `_/
+   /
+
+----------------------------------------------------------------------
+LATEST EVENTS
+
+[2026-06-30 13:43:39 +0000] Reported boulder at height 15 and slope at 3
+[2026-07-03 20:52:21 +0000] Cosmo pushed the boulder
+[2026-07-05 19:44:53 +0000] ais523 pushed the boulder
+[2026-07-05 19:45:32 +0000] Murphy pushed the boulder
+[2026-07-06 04:55:15 +0000] msh210 pushed the boulder
+[2026-07-06 06:10:58 +0000] snail pushed the boulder
+[2026-07-06 09:13:14 +0000] Galle pushed the boulder
+
+----------------------------------------------------------------------
+TOP RECENT PUSHERS (with exponential decay!)
+
+#1  0.949 ============================ Galle
+#2  0.889 ========================== msh210
+#3  0.562 ================ snail
+#4  0.485 ============== ais523
+#5  0.422 ============ Murphy
+#6  0.375 =========== Salad
+#7  0.316 ========= Cosmo
+#8  0.057 = pizza723
+
+(The score is the average over all half-lifes of the scores obtained by
+each push contributing 1 with exponential decay with that half-life,
+rounding the time using which week it happened on.)
+
+----------------------------------------------------------------------
+THE VEBLEN
+
+          The Veblen
+          is owned by msh210
+          and costs 21 spendies
+
+----------------------------------------------------------------------
+Do you have any suggestions on what I should put on the report?
+Send them to me!
+======================================================================
+
+-- 
+juan
+Registrar, Absurdor
