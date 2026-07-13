@@ -1,0 +1,71 @@
+Date: Mon, 13 Jul 2026 08:33:35 -0300
+From: juan <juan@juanmeleiro.mat.br>
+To: agora-official@agoranomic.org
+Subject: [Absurdor] The State of the Absurd (2026w28)
+Message-ID: <oj+lQ1dY@juanmeleiro.mat.br>
+Mail-Followup-To: agora-official@agoranomic.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Mutt-Resume-Draft: 1
+
+======================================================================
+absurdor: juan          The State of the Absurd       2026-07-13 03:52                     
+======================================================================
+
+            #####     _/
+           #######   /
+          #########  /
+         |#########_/                 The Boulder
+        /  #######/                      is at 25
+       /_   #####/                     Its Slope is 5
+      / /O_/   /
+      | /_    /                 It has been at 217
+      /_/\.  /                  Moving as fast as 8
+     //  // _/
+    /‘  /‘_/
+   /  __`/
+   `_/
+   /
+
+----------------------------------------------------------------------
+LATEST EVENTS
+
+[2026-07-06 23:08:42 +0000] Reported boulder at height 21 and slope at 4
+[2026-07-12 11:26:40 +0000] Salad pushed the boulder
+[2026-07-12 18:28:23 +0000] Murphy pushed the boulder
+[2026-07-12 18:34:19 +0000] ais523 pushed the boulder
+[2026-07-13 06:52:14 +0000] msh210 pushed the boulder
+
+----------------------------------------------------------------------
+TOP RECENT PUSHERS (with exponential decay!)
+
+#1  0.900 =========================== msh210
+#2  0.486 ============== ais523
+#3  0.451 ============= Galle
+#4  0.442 ============= Murphy
+#5  0.389 =========== Salad
+#6  0.211 ====== snail
+#7  0.198 ===== Cosmo
+#8  0.042 = pizza723
+
+(The score is the average over all half-lifes of the scores obtained by
+each push contributing 1 with exponential decay with that half-life,
+rounding the time using which week it happened on.)
+
+----------------------------------------------------------------------
+THE VEBLEN
+
+          The Veblen
+          is owned by msh210
+          and costs 21 spendies
+
+----------------------------------------------------------------------
+Do you have any suggestions on what I should put on the report?
+Send them to me!
+======================================================================
+
+-- 
+juan
+Registrar, Absurdor
