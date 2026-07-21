@@ -11,10 +11,12 @@ end)
 function Header:render(out)
 	local template = [[
 ======================================================================
-absurdor: juan          The State of the Absurd       %s                     
+absurdor: juan      The State of the Absurd%s%s                     
 ======================================================================
 ]]
-	out:write(string.format(template, os.date("%Y-%m-%d %H:%M", self.last)))
+	local ts = os.date("!%Y-%m-%d %H:%M %Z", self.last)
+	local spaces = string.rep(" ", 27 - string.len(ts))
+	out:write(string.format(template, spaces, ts))
 end
 
 return Header
