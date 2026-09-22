@@ -1,0 +1,78 @@
+Date: Tue, 22 Sep 2026 09:42:45 -0300
+From: juan <juan@juanmeleiro.mat.br>
+To: agora-official@agoranomic.org
+Subject: [Absurdor] The State of the Absurd (2026w38)
+Message-ID: <os6R7uvV@juanmeleiro.mat.br>
+Mail-Followup-To: agora-official@agoranomic.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mutt-Resume-Draft: 1
+
+Behold our inevitable fate.
+
+At some point, the Boulder will fall for the last time. But we shall
+keep pushing.
+
+======================================================================
+absurdor: juan      The State of the Absurd       2026-09-22 11:17 UTC                     
+======================================================================
+                       / 
+  argh!    /   __,   /   
+        O.--../      /   
+      \ /\___=--.   /              The Boulder FELL!
+       "         \/                   It is at 3
+                 /                     Its Slope is 1
+   //  //      /        
+  / ####  //  /                 It has been at 217
+   ###### /  /                  Moving as fast as 8
+  ########   /          
+   ######  /            
+    #### /              
+     /                  
+   /                    
+
+----------------------------------------------------------------------
+LATEST EVENTS
+
+[2026-09-14 23:59:14 +0000] Reported boulder at height 33 and slope at 7
+[2026-09-16 00:05:38 +0000] pizza723 pushed the boulder
+[2026-09-20 15:18:21 +0000] ais523 pushed the boulder
+[2026-09-20 18:07:24 +0000] Murphy pushed the boulder
+[2026-09-22 08:15:58 +0000] msh210 pushed the boulder
+[2026-09-22 11:17:05 +0000] Galle pushed the boulder
+
+----------------------------------------------------------------------
+TOP RECENT PUSHERS (with exponential decay!)
+
+#1  0.966 ============================ Galle
+#2  0.950 ============================ msh210
+#3  0.462 ============= ais523
+#4  0.342 ========== Murphy
+#5  0.224 ====== pizza723
+#6  0.189 ===== Salad
+#7  0.151 ==== Cosmo
+#8  0.083 == Edward Murphy
+#9  0.067 == snail
+#10 0.050 = Forest Sweeney
+#11 0.033 = Ronic
+
+(The score is the average over all half-lifes of the scores obtained by
+each push contributing 1 with exponential decay with that half-life,
+rounding the time using which week it happened on.)
+
+----------------------------------------------------------------------
+THE VEBLEN
+
+          The Veblen
+          is owned by pizza723
+          and costs 31 spendies
+
+----------------------------------------------------------------------
+Do you have any suggestions on what I should put on the report?
+Send them to me!
+======================================================================
+
+-- 
+juan
+Registrar, Absurdor
