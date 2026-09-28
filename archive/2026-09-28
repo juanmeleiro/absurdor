@@ -1,0 +1,76 @@
+Date: Mon, 28 Sep 2026 20:08:37 -0300
+From: juan <juan@juanmeleiro.mat.br>
+To: agora-official@agoranomic.org
+Subject: [Absurdor] The State of the Absurd (2026w39)
+Message-ID: <otuDsAeS@juanmeleiro.mat.br>
+Mail-Followup-To: agora-official@agoranomic.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Mutt-Resume-Draft: 1
+
+======================================================================
+absurdor: juan      The State of the Absurd       2026-09-28 12:01 UTC                     
+======================================================================
+
+            #####     _/
+           #######   /
+          #########  /
+         |#########_/                 The Boulder
+        /  #######/                      is at 9
+       /_   #####/                     Its Slope is 2
+      / /O_/   /
+      | /_    /                 It has been at 217
+      /_/\.  /                  Moving as fast as 8
+     //  // _/
+    /‘  /‘_/
+   /  __`/
+   `_/
+   /
+
+----------------------------------------------------------------------
+LATEST EVENTS
+
+[2026-09-22 12:43:32 +0000] Reported boulder at height 3 and slope at 1
+[2026-09-27 17:38:04 +0000] Edward Murphy pushed the boulder
+[2026-09-27 20:02:18 +0000] ais523 pushed the boulder
+[2026-09-28 09:42:38 +0000] Cosmo pushed the boulder
+[2026-09-28 11:08:43 +0000] Galle pushed the boulder
+[2026-09-28 11:37:49 +0000] Ronic pushed the boulder
+[2026-09-28 12:01:25 +0000] msh210 pushed the boulder
+
+----------------------------------------------------------------------
+TOP RECENT PUSHERS (with exponential decay!)
+
+#1  0.967 ============================= Galle
+#2  0.952 ============================ msh210
+#3  0.605 ================== Cosmo
+#4  0.524 =============== Ronic
+#5  0.467 ============== ais523
+#6  0.227 ====== Murphy
+#7  0.217 ====== Edward Murphy
+#8  0.135 ==== Salad
+#9  0.123 === pizza723
+#10 0.049 = snail
+#11 0.033 = Forest Sweeney
+
+(The score is the average over all half-lifes of the scores obtained by
+each push contributing 1 with exponential decay with that half-life,
+rounding the time using which week it happened on.)
+
+----------------------------------------------------------------------
+THE VEBLEN
+
+          The Veblen
+          is owned by pizza723
+          and costs 31 spendies
+
+----------------------------------------------------------------------
+Do you have any suggestions on what I should put on the report?
+Send them to me!
+======================================================================
+
+-- 
+juan
+Registrar, Absurdor
